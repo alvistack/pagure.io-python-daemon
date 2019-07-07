@@ -1444,10 +1444,6 @@ class get_maximum_file_descriptors_TestCase(scaffold.TestCase):
         self.assertEqual(expected_result, result)
 
 
-def fake_get_maximum_file_descriptors():
-    return fake_default_maxfd
-
-
 def make_get_maximum_file_descriptors_patch(self, fake_maxfd):
     """ Make a `get_maximum_file_descriptors` patch for the `testcase`.
 
