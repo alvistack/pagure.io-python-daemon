@@ -827,6 +827,7 @@ def get_maximum_file_descriptors():
 
 
 _total_file_descriptor_range = (0, get_maximum_file_descriptors())
+_total_file_descriptor_set = set(range(*_total_file_descriptor_range))
 
 
 def _get_candidate_file_descriptors(exclude):
@@ -845,8 +846,7 @@ def _get_candidate_file_descriptors(exclude):
         The `maxfd` value is determined from the standard library
         `resource` module.
         """
-    total_file_descriptor_set = set(range(*_total_file_descriptor_range))
-    candidates = total_file_descriptor_set.difference(exclude)
+    candidates = _total_file_descriptor_set.difference(exclude)
     return candidates
 
 
