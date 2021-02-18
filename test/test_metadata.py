@@ -325,6 +325,65 @@ def patch_pkg_resources_get_distribution(
             fake_distribution=mock_distribution)
 
 
+class get_distribution_TestCase(scaffold.TestCaseWithScenarios):
+    """ Test cases for ‘get_distribution’ function. """
+
+    scenarios = [
+            ('specified none', {
+                'test_name': None,
+                'expected_distribution': None,
+                }),
+            ('specified exist', {
+                'test_name': 'mock-dist',
+                }),
+            ('specified not-exist', {
+                'test_name': 'b0gUs',
+                'expected_distribution': None,
+                }),
+            ]
+
+    def setUp(self):
+        """ Set up test fixtures. """
+        super().setUp()
+
+        if not hasattr(self, 'test_metadata_resources'):
+            resources = {}
+            if hasattr(self, 'test_version_info'):
+                resources[self.version_info_filename] = (
+                        self.test_version_info)
+            self.test_metadata_resources = resources
+
+        self.mock_distribution_name = "mock-dist"
+        patch_metadata_distribution_name(testcase=self)
+        self.mock_distribution = make_mock_distribution(
+                metadata.distribution_name,
+                metadata_resources=self.test_metadata_resources)
+        patch_pkg_resources_get_distribution(
+                testcase=self,
+                mock_distribution=self.mock_distribution)
+
+        self.test_args = {}
+        if hasattr(self, 'test_name'):
+            self.test_args['name'] = self.test_name
+
+        if not hasattr(self, 'expected_distribution'):
+            self.expected_distribution = self.mock_distribution
+
+    def test_requests_installed_distribution(self):
+        """ The package distribution should be retrieved. """
+        if (getattr(self, 'test_name', None) is None):
+            self.skipTest("no distribution name in this scenario")
+        expected_distribution_name = self.test_name
+        metadata.get_distribution(**self.test_args)
+        pkg_resources.get_distribution.assert_called_with(
+                expected_distribution_name)
+
+    def test_returns_expected_result(self):
+        """ Should return the expected result. """
+        result = metadata.get_distribution(**self.test_args)
+        self.assertIs(self.expected_distribution, result)
+
+
 class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
     """ Test cases for ‘get_distribution_version_info’ function. """
 
@@ -381,7 +440,6 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
         patch_metadata_distribution_name(testcase=self)
         self.mock_distribution = make_mock_distribution(
                 metadata.distribution_name, metadata_resources=None)
-        patch_pkg_resources_get_distribution(testcase=self)
 
         self.test_args = {}
         if hasattr(self, 'test_filename'):

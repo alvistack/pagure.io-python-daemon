@@ -23,27 +23,43 @@ distribution_name = "python-daemon"
 version_info_filename = "version_info.json"
 
 
-def get_distribution_version_info(filename=version_info_filename):
+def get_distribution(name):
+    """ Get the `Distribution` instance for distribution `name`.
+
+        :param name: The distribution name for the query.
+        :return: The `pkg_resources.Distribution` instance, or
+            ``None`` if the distribution instance is not found.
+        """
+    distribution = None
+    try:
+        distribution = pkg_resources.get_distribution(name)
+    except pkg_resources.DistributionNotFound:
+        pass
+
+    return distribution
+
+
+def get_distribution_version_info(
+        distribution, filename=version_info_filename):
     """ Get the version info from the installed distribution.
 
+        :param distribution: The `pkg_resources.Distribution` instance
+            representing the Python package to interrogate.
         :param filename: Base filename of the version info resource.
-        :return: The version info as a mapping of fields. If the
-            distribution is not available, the mapping is empty.
+        :return: The version info as a mapping of fields.
 
         The version info is stored as a metadata file in the
-        distribution.
+        `distribution`.
 
+        If the `distribution` is ``None``, or the version info
+        metadata file is not found, the return value mapping fields
+        have placeholder values.
         """
     version_info = {
             'release_date': "UNKNOWN",
             'version': "UNKNOWN",
             'maintainer': "UNKNOWN",
             }
-
-    try:
-        distribution = pkg_resources.get_distribution(distribution_name)
-    except pkg_resources.DistributionNotFound:
-        distribution = None
 
     if distribution is not None:
         if distribution.has_metadata(filename):
@@ -53,7 +69,8 @@ def get_distribution_version_info(filename=version_info_filename):
     return version_info
 
 
-version_info = get_distribution_version_info()
+distribution = get_distribution(distribution_name)
+version_info = get_distribution_version_info(distribution)
 
 version_installed = version_info['version']
 
