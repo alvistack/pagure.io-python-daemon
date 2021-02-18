@@ -226,39 +226,105 @@ except NameError:
 version_info_filename = "version_info.json"
 
 
-def fake_func_has_metadata(testcase, resource_name):
-    """ Fake the behaviour of ‘pkg_resources.Distribution.has_metadata’. """
+def fake_func_has_metadata(name, *, resource_names):
+    """ Fake the behaviour of ‘pkg_resources.Distribution.has_metadata’.
+
+        :param name: The name of the resource to interrogate.
+        :param resource_names: The known metadata resource names.
+        :return: True iff `resource_name` is a known metadata resource.
+        """
+    result = (name in resource_names)
+    return result
+
+
+def fake_func_get_metadata(name, *, resources):
+    """ Fake the behaviour of ‘pkg_resources.Distribution.get_metadata’.
+
+        :param name: The name of the resource to interrogate.
+        :param resources: Mapping {name: resource} of the known
+            metadata resources.
+        :return: The metadata resource as a string.
+        """
+    resource = NotImplemented
     if (
-            resource_name != testcase.version_info_filename
-            or not hasattr(testcase, 'test_version_info')):
-        return False
-    return True
-
-
-def fake_func_get_metadata(testcase, resource_name):
-    """ Fake the behaviour of ‘pkg_resources.Distribution.get_metadata’. """
-    if not fake_func_has_metadata(testcase, resource_name):
-        error = FileNotFoundError(resource_name)
+            hasattr(resources, '__getitem__')
+            and name in resources):
+        try:
+            resource = resources[name]
+        except KeyError:
+            error = FileNotFoundError(name)
+            raise error
+    if resource is NotImplemented:
+        error = FileNotFoundError(name)
         raise error
-    content = testcase.test_version_info
-    return content
+    return resource
 
 
-def fake_func_get_distribution(testcase, distribution_name):
+def fake_func_get_distribution(
+        testcase,
+        name, *, fake_distribution=None):
     """ Fake the behaviour of ‘pkg_resources.get_distribution’. """
-    if distribution_name != metadata.distribution_name:
+    if name != metadata.distribution_name:
         raise pkg_resources.DistributionNotFound
     if hasattr(testcase, 'get_distribution_error'):
         raise testcase.get_distribution_error
-    mock_distribution = testcase.mock_distribution
+    if (fake_distribution is None):
+        fake_resources = {}
+        if hasattr(testcase, 'test_version_info'):
+            fake_resources['version_info_filename'] = testcase.test_version_info
+        fake_distribution = make_mock_distribution(
+                name=name,
+                metadata_resources=fake_resources)
+    return fake_distribution
+
+
+def make_mock_distribution(
+        name,
+        *,
+        metadata_resources=None):
+    """ Make a mock for a `pkg_resources.Distribution` object. """
+    if metadata_resources is None:
+        metadata_resources = {}
+    mock_distribution = mock.MagicMock(name='Distribution')
     mock_distribution.has_metadata.side_effect = functools.partial(
-            fake_func_has_metadata, testcase)
+            fake_func_has_metadata,
+            resource_names=metadata_resources.keys(),
+    )
     mock_distribution.get_metadata.side_effect = functools.partial(
-            fake_func_get_metadata, testcase)
+            fake_func_get_metadata,
+            resources=metadata_resources,
+    )
     return mock_distribution
 
 
-@mock.patch.object(metadata, 'distribution_name', new="mock-dist")
+def patch_metadata_distribution_name(*, testcase, distribution_name=None):
+    """ Patch `metadata.distribution_name` for the `testcase`. """
+    if distribution_name is None:
+        distribution_name = testcase.mock_distribution_name
+    patcher_distribution_name = mock.patch.object(
+            metadata, 'distribution_name',
+            new=distribution_name)
+    patcher_distribution_name.start()
+    testcase.addCleanup(patcher_distribution_name.stop)
+
+
+def patch_pkg_resources_get_distribution(
+        *, testcase, mock_distribution=None):
+    """
+    Patch the `pkg_resources.get_distribution` function for `testcase`.
+    """
+    if mock_distribution is None:
+        mock_distribution = testcase.mock_distribution
+    func_patcher_get_distribution = mock.patch.object(
+            pkg_resources, 'get_distribution')
+    func_patcher_get_distribution.start()
+    testcase.addCleanup(func_patcher_get_distribution.stop)
+    pkg_resources.get_distribution.side_effect = functools.partial(
+            fake_func_get_distribution,
+            testcase,
+            fake_distribution=mock_distribution)
+
+
 class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
     """ Test cases for ‘get_distribution_version_info’ function. """
 
@@ -309,7 +375,13 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(get_distribution_version_info_TestCase, self).setUp()
+        super().setUp()
+
+        self.mock_distribution_name = "mock-dist"
+        patch_metadata_distribution_name(testcase=self)
+        self.mock_distribution = make_mock_distribution(
+                metadata.distribution_name, metadata_resources=None)
+        patch_pkg_resources_get_distribution(testcase=self)
 
         self.test_args = {}
         if hasattr(self, 'test_filename'):
@@ -321,20 +393,18 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
         if not hasattr(self, 'expected_resource_name'):
             self.expected_resource_name = version_info_filename
 
-        self.mock_distribution = mock.MagicMock()
-        func_patcher_get_distribution = mock.patch.object(
-                pkg_resources, 'get_distribution')
-        func_patcher_get_distribution.start()
-        self.addCleanup(func_patcher_get_distribution.stop)
-        pkg_resources.get_distribution.side_effect = functools.partial(
-                fake_func_get_distribution, self)
+        if not hasattr(self, 'test_metadata_resources'):
+            resources = {}
+            if hasattr(self, 'test_version_info'):
+                resources[self.version_info_filename] = (
+                        self.test_version_info)
+            self.test_metadata_resources = resources
 
-    def test_requests_installed_distribution(self):
-        """ The package distribution should be retrieved. """
-        expected_distribution_name = metadata.distribution_name
-        metadata.get_distribution_version_info(**self.test_args)
-        pkg_resources.get_distribution.assert_called_with(
-                expected_distribution_name)
+        self.mock_distribution = make_mock_distribution(
+                name=metadata.distribution_name,
+                metadata_resources=self.test_metadata_resources)
+        self.test_args['distribution'] = getattr(
+                self, 'test_distribution', self.mock_distribution)
 
     def test_requests_specified_filename(self):
         """ The specified metadata resource name should be requested. """
