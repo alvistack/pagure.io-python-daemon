@@ -37,7 +37,7 @@ class TimeoutPIDLockFile(PIDLockFile, object):
 
             """
         self.acquire_timeout = acquire_timeout
-        super(TimeoutPIDLockFile, self).__init__(path, *args, **kwargs)
+        super().__init__(path, *args, **kwargs)
 
     def acquire(self, timeout=None, *args, **kwargs):
         """ Acquire the lock.
@@ -54,7 +54,7 @@ class TimeoutPIDLockFile(PIDLockFile, object):
             """
         if timeout is None:
             timeout = self.acquire_timeout
-        super(TimeoutPIDLockFile, self).acquire(timeout, *args, **kwargs)
+        super().acquire(timeout, *args, **kwargs)
 
 
 # Copyright © 2008–2019 Ben Finney <ben+python@benfinney.id.au>

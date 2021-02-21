@@ -45,10 +45,8 @@ def test_suite():
 
 
 test_requirements = [
-        "unittest2 >=0.5.1",
         "testtools",
         "testscenarios >=0.4",
-        "mock >=1.3",
         "coverage",
         "docutils",
         ]
@@ -94,7 +92,6 @@ setup_kwargs = dict(
             "Development Status :: 5 - Production/Stable",
             "License :: OSI Approved :: Apache Software License",
             "Operating System :: POSIX",
-            "Programming Language :: Python :: 2.7",
             "Programming Language :: Python :: 3",
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",

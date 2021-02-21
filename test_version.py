@@ -28,7 +28,7 @@ import textwrap
 import docutils
 import docutils.nodes
 import docutils.writers
-import mock
+import unittest.mock
 import setuptools
 import setuptools.command
 import testscenarios
@@ -55,19 +55,19 @@ def make_test_classes_for_ensure_class_bases_begin_with():
 
     class quux_metaclass(type):
         def __new__(metaclass, name, bases, namespace):
-            return super(quux_metaclass, metaclass).__new__(
+            return super().__new__(
                     metaclass, name, bases, namespace)
 
-    class Foo(object):
+    class Foo:
         __metaclass__ = type
 
-    class Bar(object):
+    class Bar:
         pass
 
     class FooInheritingBar(Bar):
         __metaclass__ = type
 
-    class FooWithCustomMetaclass(object):
+    class FooWithCustomMetaclass:
         __metaclass__ = quux_metaclass
 
     result = dict(
@@ -97,7 +97,7 @@ class ensure_class_bases_begin_with_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ensure_class_bases_begin_with_TestCase, self).setUp()
+        super().setUp()
 
         self.class_name = self.test_class.__name__
         self.test_module_namespace = {self.class_name: self.test_class}
@@ -105,7 +105,7 @@ class ensure_class_bases_begin_with_TestCase(
         if not hasattr(self, 'expected_metaclass'):
             self.expected_metaclass = type
 
-        patcher_metaclass = mock.patch.object(
+        patcher_metaclass = unittest.mock.patch.object(
             self.test_class, '__metaclass__')
         patcher_metaclass.start()
         self.addCleanup(patcher_metaclass.stop)
@@ -126,7 +126,7 @@ class ensure_class_bases_begin_with_TestCase(
                 self.test_module_namespace, self.class_name, self.base_class)
         expected_class_name = self.class_name
         self.test_class.__metaclass__.assert_called_with(
-                expected_class_name, mock.ANY, mock.ANY)
+                expected_class_name, unittest.mock.ANY, unittest.mock.ANY)
 
     def test_calls_metaclass_with_expected_bases(self):
         """ Should call the metaclass with the expected bases. """
@@ -136,7 +136,7 @@ class ensure_class_bases_begin_with_TestCase(
                 [self.base_class]
                 + list(self.test_class.__bases__))
         self.test_class.__metaclass__.assert_called_with(
-                mock.ANY, expected_bases, mock.ANY)
+                unittest.mock.ANY, expected_bases, unittest.mock.ANY)
 
     def test_calls_metaclass_with_expected_namespace(self):
         """ Should call the metaclass with the expected class namespace. """
@@ -145,7 +145,7 @@ class ensure_class_bases_begin_with_TestCase(
         expected_namespace = self.test_class.__dict__.copy()
         del expected_namespace['__dict__']
         self.test_class.__metaclass__.assert_called_with(
-                mock.ANY, mock.ANY, expected_namespace)
+                unittest.mock.ANY, unittest.mock.ANY, expected_namespace)
 
 
 class ensure_class_bases_begin_with_AlreadyHasBase_TestCase(
@@ -175,7 +175,7 @@ class ensure_class_bases_begin_with_AlreadyHasBase_TestCase(
         self.class_name = self.test_class.__name__
         self.test_module_namespace = {self.class_name: self.test_class}
 
-        patcher_metaclass = mock.patch.object(
+        patcher_metaclass = unittest.mock.patch.object(
             self.test_class, '__metaclass__')
         patcher_metaclass.start()
         self.addCleanup(patcher_metaclass.stop)
@@ -235,7 +235,7 @@ class InvalidFormatError_TestCase(
 
     def setUp(self):
         """ Set up fixtures for this test case. """
-        super(InvalidFormatError_TestCase, self).setUp()
+        super().setUp()
 
         self.test_kwargs = {}
         self.test_kwargs['node'] = self.test_node
@@ -271,7 +271,7 @@ class VersionInfoWriter_TestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(VersionInfoWriter_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.VersionInfoWriter()
 
@@ -288,16 +288,16 @@ class VersionInfoWriter_translate_TestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(VersionInfoWriter_translate_TestCase, self).setUp()
+        super().setUp()
 
-        patcher_translator = mock.patch.object(
+        patcher_translator = unittest.mock.patch.object(
                 version, 'VersionInfoTranslator')
         self.mock_class_translator = patcher_translator.start()
         self.addCleanup(patcher_translator.stop)
         self.mock_translator = self.mock_class_translator.return_value
 
         self.test_instance = version.VersionInfoWriter()
-        patcher_document = mock.patch.object(
+        patcher_document = unittest.mock.patch.object(
                 self.test_instance, 'document')
         patcher_document.start()
         self.addCleanup(patcher_document.stop)
@@ -382,7 +382,7 @@ class ChangeLogEntry_TestCase(ChangeLogEntry_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ChangeLogEntry_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.ChangeLogEntry()
 
@@ -561,7 +561,7 @@ class ChangeLogEntry_as_version_info_entry_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ChangeLogEntry_as_version_info_entry_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.ChangeLogEntry(**self.test_args)
 
@@ -574,15 +574,15 @@ class ChangeLogEntry_as_version_info_entry_TestCase(
 def make_mock_field_node(field_name, field_body):
     """ Make a mock Docutils field node for tests. """
 
-    mock_field_node = mock.MagicMock(
+    mock_field_node = unittest.mock.MagicMock(
             name='field', spec=docutils.nodes.field)
 
-    mock_field_name_node = mock.MagicMock(
+    mock_field_name_node = unittest.mock.MagicMock(
             name='field_name', spec=docutils.nodes.field_name)
     mock_field_name_node.parent = mock_field_node
     mock_field_name_node.children = [field_name]
 
-    mock_field_body_node = mock.MagicMock(
+    mock_field_body_node = unittest.mock.MagicMock(
             name='field_body', spec=docutils.nodes.field_body)
     mock_field_body_node.parent = mock_field_node
     mock_field_body_node.children = [field_body]
@@ -885,7 +885,7 @@ fake_version_info = {
         }
 
 
-@mock.patch.object(
+@unittest.mock.patch.object(
         version, "get_latest_version", return_value=fake_version_info)
 class generate_version_info_from_changelog_TestCase(
         testscenarios.WithScenarios, testtools.TestCase):
@@ -916,7 +916,7 @@ class generate_version_info_from_changelog_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(generate_version_info_from_changelog_TestCase, self).setUp()
+        super().setUp()
 
         self.fake_changelog_file_path = tempfile.mktemp()
 
@@ -931,7 +931,7 @@ class generate_version_info_from_changelog_TestCase(
                 result = io.StringIO()
             return result
 
-        func_patcher_io_open = mock.patch.object(
+        func_patcher_io_open = unittest.mock.patch.object(
                 io, "open")
         func_patcher_io_open.start()
         self.addCleanup(func_patcher_io_open.stop)
@@ -939,8 +939,9 @@ class generate_version_info_from_changelog_TestCase(
 
         self.file_encoding = "utf-8"
 
-        func_patcher_changelog_to_version_info_collection = mock.patch.object(
-                version, "changelog_to_version_info_collection")
+        func_patcher_changelog_to_version_info_collection = (
+                unittest.mock.patch.object(
+                    version, "changelog_to_version_info_collection"))
         func_patcher_changelog_to_version_info_collection.start()
         self.addCleanup(func_patcher_changelog_to_version_info_collection.stop)
         if hasattr(self, 'fake_versions_json'):
@@ -1028,7 +1029,7 @@ class get_latest_version_TestCase(
         self.assertDictEqual(self.expected_result, result)
 
 
-@mock.patch.object(json, "dumps", side_effect=json.dumps)
+@unittest.mock.patch.object(json, "dumps", side_effect=json.dumps)
 class serialise_version_info_from_mapping_TestCase(
         testscenarios.WithScenarios, testtools.TestCase):
     """ Test cases for ‘get_latest_version’ function. """
@@ -1048,7 +1049,7 @@ class serialise_version_info_from_mapping_TestCase(
         version.serialise_version_info_from_mapping(
                 self.test_version_info)
         mock_func_json_dumps.assert_called_with(
-                self.test_version_info, indent=mock.ANY)
+                self.test_version_info, indent=unittest.mock.ANY)
 
     def test_returns_expected_result(self, mock_func_json_dumps):
         """ Should return expected result. """
@@ -1118,10 +1119,11 @@ class get_changelog_path_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(get_changelog_path_TestCase, self).setUp()
+        super().setUp()
 
         test_distribution = distutils.dist.Distribution()
-        self.test_distribution = mock.MagicMock(test_distribution)
+        self.test_distribution = unittest.mock.MagicMock(
+                test_distribution)
 
         if not hasattr(self, 'script_directory'):
             self.script_directory = self.default_path
@@ -1156,7 +1158,7 @@ class WriteVersionInfoCommand_BaseTestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         fake_distribution_name = self.getUniqueString()
 
@@ -1179,7 +1181,7 @@ class WriteVersionInfoCommand_user_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_user_options_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
@@ -1222,8 +1224,10 @@ class WriteVersionInfoCommand_initialize_options_TestCase(
                 WriteVersionInfoCommand_initialize_options_TestCase, self
                 ).setUp()
 
-        patcher_func_egg_info_initialize_options = mock.patch.object(
-                setuptools.command.egg_info.egg_info, "initialize_options")
+        patcher_func_egg_info_initialize_options = (
+                unittest.mock.patch.object(
+                    setuptools.command.egg_info.egg_info,
+                    "initialize_options"))
         patcher_func_egg_info_initialize_options.start()
         self.addCleanup(patcher_func_egg_info_initialize_options.stop)
 
@@ -1250,12 +1254,12 @@ class WriteVersionInfoCommand_finalize_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_finalize_options_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
 
-        patcher_func_egg_info_finalize_options = mock.patch.object(
+        patcher_func_egg_info_finalize_options = unittest.mock.patch.object(
                 setuptools.command.egg_info.egg_info, "finalize_options")
         patcher_func_egg_info_finalize_options.start()
         self.addCleanup(patcher_func_egg_info_finalize_options.stop)
@@ -1267,7 +1271,7 @@ class WriteVersionInfoCommand_finalize_options_TestCase(
         self.fake_egg_dir = self.getUniqueString()
         self.test_instance.egg_info = self.fake_egg_dir
 
-        patcher_func_get_changelog_path = mock.patch.object(
+        patcher_func_get_changelog_path = unittest.mock.patch.object(
                 version, "get_changelog_path")
         patcher_func_get_changelog_path.start()
         self.addCleanup(patcher_func_get_changelog_path.stop)
@@ -1306,7 +1310,7 @@ class WriteVersionInfoCommand_finalize_options_TestCase(
     def test_sets_outfile_path_to_default(self):
         """ Should set ‘outfile_path’ attribute to default value. """
         fake_version_info_filename = self.getUniqueString()
-        with mock.patch.object(
+        with unittest.mock.patch.object(
                 version, "version_info_filename",
                 new=fake_version_info_filename):
             self.test_instance.finalize_options()
@@ -1351,13 +1355,13 @@ class has_changelog_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(has_changelog_TestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_command = version.EggInfoCommand(
                 self.test_distribution)
 
-        patcher_func_get_changelog_path = mock.patch.object(
+        patcher_func_get_changelog_path = unittest.mock.patch.object(
                 version, "get_changelog_path")
         patcher_func_get_changelog_path.start()
         self.addCleanup(patcher_func_get_changelog_path.stop)
@@ -1380,7 +1384,7 @@ class has_changelog_TestCase(
                 result = False
             return result
 
-        func_patcher_os_path_exists = mock.patch.object(
+        func_patcher_os_path_exists = unittest.mock.patch.object(
                 os.path, "exists")
         func_patcher_os_path_exists.start()
         self.addCleanup(func_patcher_os_path_exists.stop)
@@ -1404,7 +1408,7 @@ class WriteVersionInfoCommand_run_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_run_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
@@ -1428,14 +1432,14 @@ class WriteVersionInfoCommand_run_TestCase(
     def patch_version_info(self):
         """ Patch the generation of version info. """
         self.fake_version_info = self.getUniqueString()
-        func_patcher = mock.patch.object(
+        func_patcher = unittest.mock.patch.object(
                 version, 'generate_version_info_from_changelog',
                 return_value=self.fake_version_info)
         self.mock_func_generate_version_info = func_patcher.start()
         self.addCleanup(func_patcher.stop)
 
         self.fake_version_info_serialised = self.getUniqueString()
-        func_patcher = mock.patch.object(
+        func_patcher = unittest.mock.patch.object(
                 version, 'serialise_version_info_from_mapping',
                 return_value=self.fake_version_info_serialised)
         self.mock_func_serialise_version_info = func_patcher.start()
@@ -1443,7 +1447,7 @@ class WriteVersionInfoCommand_run_TestCase(
 
     def patch_egg_info_write_file(self):
         """ Patch the command `write_file` method for this test case. """
-        func_patcher = mock.patch.object(
+        func_patcher = unittest.mock.patch.object(
             version.WriteVersionInfoCommand, 'write_file')
         self.mock_func_egg_info_write_file = func_patcher.start()
         self.addCleanup(func_patcher.stop)
@@ -1502,7 +1506,7 @@ class EggInfoCommand_BaseTestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(EggInfoCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
@@ -1521,7 +1525,7 @@ class EggInfoCommand_TestCase(
         self.assertIn(expected_item, commands_by_name.items())
 
 
-@mock.patch.object(
+@unittest.mock.patch.object(
         setuptools.command.egg_info.egg_info, "run",
         return_value=None,
         )
@@ -1530,14 +1534,15 @@ class EggInfoCommand_run_TestCase(EggInfoCommand_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(EggInfoCommand_run_TestCase, self).setUp()
+        super().setUp()
 
-        patcher_func_egg_info_get_sub_commands = mock.patch.object(
-                self.base_command_class, "get_sub_commands")
+        patcher_func_egg_info_get_sub_commands = (
+                unittest.mock.patch.object(
+                    self.base_command_class, "get_sub_commands"))
         patcher_func_egg_info_get_sub_commands.start()
         self.addCleanup(patcher_func_egg_info_get_sub_commands.stop)
 
-        patcher_func_egg_info_run_command = mock.patch.object(
+        patcher_func_egg_info_run_command = unittest.mock.patch.object(
                 self.base_command_class, "run_command")
         patcher_func_egg_info_run_command.start()
         self.addCleanup(patcher_func_egg_info_run_command.stop)
@@ -1561,7 +1566,7 @@ class BuildCommand_BaseTestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(BuildCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
@@ -1580,7 +1585,7 @@ class BuildCommand_TestCase(
         self.assertIn(expected_item, commands_by_name.items())
 
 
-@mock.patch.object(
+@unittest.mock.patch.object(
         distutils.command.build.build, "run",
         return_value=None,
         )
@@ -1589,14 +1594,14 @@ class BuildCommand_run_TestCase(BuildCommand_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(BuildCommand_run_TestCase, self).setUp()
+        super().setUp()
 
-        patcher_func_build_get_sub_commands = mock.patch.object(
+        patcher_func_build_get_sub_commands = unittest.mock.patch.object(
                 self.base_command_class, "get_sub_commands")
         patcher_func_build_get_sub_commands.start()
         self.addCleanup(patcher_func_build_get_sub_commands.stop)
 
-        patcher_func_build_run_command = mock.patch.object(
+        patcher_func_build_run_command = unittest.mock.patch.object(
                 self.base_command_class, "run_command")
         patcher_func_build_run_command.start()
         self.addCleanup(patcher_func_build_run_command.stop)

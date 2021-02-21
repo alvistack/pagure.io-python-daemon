@@ -50,7 +50,7 @@ class DaemonRunnerError(Exception):
     def __init__(self, *args, **kwargs):
         self._chain_from_context()
 
-        super(DaemonRunnerError, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _chain_from_context(self):
         _chain_exception_from_existing_exception_context(self, as_cause=True)

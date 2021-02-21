@@ -14,7 +14,16 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-No changes.
+Removed:
+
+* Remove support for Python versions older than Python 3.
+
+  Python 2 has been unsupported by the Python project since 2020.
+
+* Remove dependency on back-ported `unittest2` and `mock`.
+  Depend instead on standard library `unittest` and `unittest.mock`.
+
+  Thanks to Michał Górny for the merge requests.
 
 
 Version 2.2.4

@@ -26,7 +26,7 @@ import os
 import tempfile
 
 import lockfile
-import mock
+import unittest.mock
 
 from . import scaffold
 
@@ -40,7 +40,7 @@ class FakeFileDescriptorStringIO(io.StringIO, object):
 
     def __init__(self, *args, **kwargs):
         self._fileno = next(self._fileno_generator)
-        super(FakeFileDescriptorStringIO, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def fileno(self):
         return self._fileno
@@ -168,7 +168,7 @@ def setup_pidfile_fixtures(testcase):
             pass
         return value
 
-    func_patcher_os_getpid = mock.patch.object(
+    func_patcher_os_getpid = unittest.mock.patch.object(
             os, "getpid",
             return_value=scenarios['simple']['pid'])
     func_patcher_os_getpid.start()
@@ -242,10 +242,10 @@ def setup_pidfile_fixtures(testcase):
             result = FakeFileDescriptorStringIO()
         return result
 
-    mock_open = mock.mock_open()
+    mock_open = unittest.mock.mock_open()
     mock_open.side_effect = fake_open
 
-    func_patcher_builtin_open = mock.patch.object(
+    func_patcher_builtin_open = unittest.mock.patch.object(
             builtins, "open",
             new=mock_open)
     func_patcher_builtin_open.start()
@@ -261,9 +261,9 @@ def setup_pidfile_fixtures(testcase):
             result = FakeFileDescriptorStringIO().fileno()
         return result
 
-    mock_os_open = mock.MagicMock(side_effect=fake_os_open)
+    mock_os_open = unittest.mock.MagicMock(side_effect=fake_os_open)
 
-    func_patcher_os_open = mock.patch.object(
+    func_patcher_os_open = unittest.mock.patch.object(
             os, "open",
             new=mock_os_open)
     func_patcher_os_open.start()
@@ -276,9 +276,9 @@ def setup_pidfile_fixtures(testcase):
             raise OSError(errno.EBADF, "Bad file descriptor")
         return result
 
-    mock_os_fdopen = mock.MagicMock(side_effect=fake_os_fdopen)
+    mock_os_fdopen = unittest.mock.MagicMock(side_effect=fake_os_fdopen)
 
-    func_patcher_os_fdopen = mock.patch.object(
+    func_patcher_os_fdopen = unittest.mock.patch.object(
             os, "fdopen",
             new=mock_os_fdopen)
     func_patcher_os_fdopen.start()
@@ -324,7 +324,7 @@ def make_lockfile_method_fakes(scenario):
     fake_methods = dict(
             (
                 func_name.replace('fake_func_', ''),
-                mock.MagicMock(side_effect=fake_func))
+                unittest.mock.MagicMock(side_effect=fake_func))
             for (func_name, fake_func) in vars().items()
             if func_name.startswith('fake_func_'))
 
@@ -351,7 +351,7 @@ def apply_lockfile_method_mocks(mock_lockfile, testcase, scenario):
             if func_name not in ['read_pid'])
 
     for (func_name, fake_func) in fake_methods.items():
-        func_patcher = mock.patch.object(
+        func_patcher = unittest.mock.patch.object(
                 mock_lockfile, func_name,
                 new=fake_func)
         func_patcher.start()
@@ -375,7 +375,8 @@ def setup_pidlockfile_fixtures(testcase, scenario_name=None):
             'write_pid_to_pidfile',
             'remove_existing_pidfile',
             ]:
-        func_patcher = mock.patch.object(lockfile.pidlockfile, func_name)
+        func_patcher = unittest.mock.patch.object(
+                lockfile.pidlockfile, func_name)
         func_patcher.start()
         testcase.addCleanup(func_patcher.stop)
 
@@ -385,13 +386,13 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(TimeoutPIDLockFile_TestCase, self).setUp()
+        super().setUp()
 
         pidlockfile_scenarios = make_pidlockfile_scenarios()
         self.pidlockfile_scenario = pidlockfile_scenarios['simple']
 
         for func_name in ['__init__', 'acquire']:
-            func_patcher = mock.patch.object(
+            func_patcher = unittest.mock.patch.object(
                     lockfile.pidlockfile.PIDLockFile, func_name)
             func_patcher.start()
             self.addCleanup(func_patcher.stop)
@@ -427,7 +428,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
         expected_timeout = self.test_kwargs['acquire_timeout']
         self.assertEqual(expected_timeout, instance.acquire_timeout)
 
-    @mock.patch.object(
+    @unittest.mock.patch.object(
             lockfile.pidlockfile.PIDLockFile, "__init__",
             autospec=True)
     def test_calls_superclass_init(self, mock_init):
@@ -436,7 +437,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
         instance = daemon.pidfile.TimeoutPIDLockFile(**self.test_kwargs)
         mock_init.assert_called_with(instance, expected_path)
 
-    @mock.patch.object(
+    @unittest.mock.patch.object(
             lockfile.pidlockfile.PIDLockFile, "acquire",
             autospec=True)
     def test_acquire_uses_specified_timeout(self, mock_func_acquire):
@@ -447,7 +448,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
         instance.acquire(test_timeout)
         mock_func_acquire.assert_called_with(instance, expected_timeout)
 
-    @mock.patch.object(
+    @unittest.mock.patch.object(
             lockfile.pidlockfile.PIDLockFile, "acquire",
             autospec=True)
     def test_acquire_uses_stored_timeout_by_default(self, mock_func_acquire):
