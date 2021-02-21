@@ -14,7 +14,11 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-No changes.
+Removed:
+
+* Remove support for Python versions older than Python 3.
+
+  Python 2 has been unsupported by the Python project since 2020.
 
 
 Version 2.2.4
