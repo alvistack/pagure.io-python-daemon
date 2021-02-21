@@ -1617,7 +1617,7 @@ class BuildCommand_run_TestCase(BuildCommand_BaseTestCase):
         mock_func_build_run.assert_called_with()
 
 
-# Copyright © 2008–2019 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2008–2021 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the
