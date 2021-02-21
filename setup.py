@@ -47,7 +47,6 @@ def test_suite():
 test_requirements = [
         "testtools",
         "testscenarios >=0.4",
-        "mock >=1.3",
         "coverage",
         "docutils",
         ]
