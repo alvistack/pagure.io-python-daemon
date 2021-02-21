@@ -55,19 +55,19 @@ def make_test_classes_for_ensure_class_bases_begin_with():
 
     class quux_metaclass(type):
         def __new__(metaclass, name, bases, namespace):
-            return super(quux_metaclass, metaclass).__new__(
+            return super().__new__(
                     metaclass, name, bases, namespace)
 
-    class Foo(object):
+    class Foo:
         __metaclass__ = type
 
-    class Bar(object):
+    class Bar:
         pass
 
     class FooInheritingBar(Bar):
         __metaclass__ = type
 
-    class FooWithCustomMetaclass(object):
+    class FooWithCustomMetaclass:
         __metaclass__ = quux_metaclass
 
     result = dict(
@@ -97,7 +97,7 @@ class ensure_class_bases_begin_with_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ensure_class_bases_begin_with_TestCase, self).setUp()
+        super().setUp()
 
         self.class_name = self.test_class.__name__
         self.test_module_namespace = {self.class_name: self.test_class}
@@ -235,7 +235,7 @@ class InvalidFormatError_TestCase(
 
     def setUp(self):
         """ Set up fixtures for this test case. """
-        super(InvalidFormatError_TestCase, self).setUp()
+        super().setUp()
 
         self.test_kwargs = {}
         self.test_kwargs['node'] = self.test_node
@@ -271,7 +271,7 @@ class VersionInfoWriter_TestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(VersionInfoWriter_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.VersionInfoWriter()
 
@@ -288,7 +288,7 @@ class VersionInfoWriter_translate_TestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(VersionInfoWriter_translate_TestCase, self).setUp()
+        super().setUp()
 
         patcher_translator = unittest.mock.patch.object(
                 version, 'VersionInfoTranslator')
@@ -382,7 +382,7 @@ class ChangeLogEntry_TestCase(ChangeLogEntry_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ChangeLogEntry_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.ChangeLogEntry()
 
@@ -561,7 +561,7 @@ class ChangeLogEntry_as_version_info_entry_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(ChangeLogEntry_as_version_info_entry_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.ChangeLogEntry(**self.test_args)
 
@@ -916,7 +916,7 @@ class generate_version_info_from_changelog_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(generate_version_info_from_changelog_TestCase, self).setUp()
+        super().setUp()
 
         self.fake_changelog_file_path = tempfile.mktemp()
 
@@ -1119,7 +1119,7 @@ class get_changelog_path_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(get_changelog_path_TestCase, self).setUp()
+        super().setUp()
 
         test_distribution = distutils.dist.Distribution()
         self.test_distribution = unittest.mock.MagicMock(
@@ -1158,7 +1158,7 @@ class WriteVersionInfoCommand_BaseTestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         fake_distribution_name = self.getUniqueString()
 
@@ -1181,7 +1181,7 @@ class WriteVersionInfoCommand_user_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_user_options_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
@@ -1254,7 +1254,7 @@ class WriteVersionInfoCommand_finalize_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_finalize_options_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
@@ -1355,7 +1355,7 @@ class has_changelog_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(has_changelog_TestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_command = version.EggInfoCommand(
@@ -1408,7 +1408,7 @@ class WriteVersionInfoCommand_run_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(WriteVersionInfoCommand_run_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
@@ -1506,7 +1506,7 @@ class EggInfoCommand_BaseTestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(EggInfoCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
@@ -1534,7 +1534,7 @@ class EggInfoCommand_run_TestCase(EggInfoCommand_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(EggInfoCommand_run_TestCase, self).setUp()
+        super().setUp()
 
         patcher_func_egg_info_get_sub_commands = (
                 unittest.mock.patch.object(
@@ -1566,7 +1566,7 @@ class BuildCommand_BaseTestCase(testtools.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(BuildCommand_BaseTestCase, self).setUp()
+        super().setUp()
 
         self.test_distribution = distutils.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
@@ -1594,7 +1594,7 @@ class BuildCommand_run_TestCase(BuildCommand_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(BuildCommand_run_TestCase, self).setUp()
+        super().setUp()
 
         patcher_func_build_get_sub_commands = unittest.mock.patch.object(
                 self.base_command_class, "get_sub_commands")

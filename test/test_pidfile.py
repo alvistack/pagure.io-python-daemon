@@ -40,7 +40,7 @@ class FakeFileDescriptorStringIO(io.StringIO, object):
 
     def __init__(self, *args, **kwargs):
         self._fileno = next(self._fileno_generator)
-        super(FakeFileDescriptorStringIO, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def fileno(self):
         return self._fileno
@@ -386,7 +386,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(TimeoutPIDLockFile_TestCase, self).setUp()
+        super().setUp()
 
         pidlockfile_scenarios = make_pidlockfile_scenarios()
         self.pidlockfile_scenario = pidlockfile_scenarios['simple']

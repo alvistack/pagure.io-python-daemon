@@ -124,7 +124,7 @@ class YearRange_TestCase(scaffold.TestCaseWithScenarios):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(YearRange_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance = metadata.YearRange(
                 self.begin_year, self.end_year)

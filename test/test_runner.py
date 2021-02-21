@@ -160,7 +160,7 @@ def setup_runner_fixtures(testcase):
     patcher_lockfile_class.start()
     testcase.addCleanup(patcher_lockfile_class.stop)
 
-    class TestApp(object):
+    class TestApp:
 
         def __init__(self):
             self.stdin_path = testcase.stream_file_paths['stdin']
@@ -227,7 +227,7 @@ class DaemonRunner_BaseTestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_BaseTestCase, self).setUp()
+        super().setUp()
 
         setup_runner_fixtures(self)
         set_runner_scenario(self, 'simple')
@@ -238,7 +238,7 @@ class DaemonRunner_TestCase(DaemonRunner_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_TestCase, self).setUp()
+        super().setUp()
 
         func_patcher_parse_args = unittest.mock.patch.object(
                 daemon.runner.DaemonRunner, "parse_args")
@@ -382,7 +382,7 @@ class DaemonRunner_parse_args_TestCase(DaemonRunner_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_parse_args_TestCase, self).setUp()
+        super().setUp()
 
         func_patcher_usage_exit = unittest.mock.patch.object(
                 daemon.runner.DaemonRunner, "_usage_exit",
@@ -451,7 +451,7 @@ class DaemonRunner_do_action_start_TestCase(DaemonRunner_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_do_action_start_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance.action = 'start'
 
@@ -511,7 +511,7 @@ class DaemonRunner_do_action_stop_TestCase(DaemonRunner_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_do_action_stop_TestCase, self).setUp()
+        super().setUp()
 
         set_runner_scenario(self, 'pidfile-locked')
 
@@ -575,7 +575,7 @@ class DaemonRunner_do_action_restart_TestCase(DaemonRunner_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonRunner_do_action_restart_TestCase, self).setUp()
+        super().setUp()
 
         set_runner_scenario(self, 'pidfile-locked')
 
@@ -621,7 +621,7 @@ class is_pidfile_stale_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(is_pidfile_stale_TestCase, self).setUp()
+        super().setUp()
 
         func_patcher_os_kill = unittest.mock.patch.object(os, "kill")
         func_patcher_os_kill.start()

@@ -126,7 +126,7 @@ class DaemonContext_BaseTestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_BaseTestCase, self).setUp()
+        super().setUp()
 
         setup_daemon_context_fixtures(self)
 
@@ -333,7 +333,7 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_open_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance._is_open = False
 
@@ -562,7 +562,7 @@ class DaemonContext_close_TestCase(DaemonContext_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_close_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance._is_open = True
 
@@ -619,7 +619,7 @@ class DaemonContext_context_manager_exit_TestCase(DaemonContext_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_context_manager_exit_TestCase, self).setUp()
+        super().setUp()
 
         self.test_args = dict(
                 exc_type=object(),
@@ -648,7 +648,7 @@ class DaemonContext_terminate_TestCase(DaemonContext_BaseTestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_terminate_TestCase, self).setUp()
+        super().setUp()
 
         self.test_signal = signal.SIGTERM
         self.test_frame = None
@@ -828,7 +828,7 @@ class DaemonContext_make_signal_handler_map_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(DaemonContext_make_signal_handler_map_TestCase, self).setUp()
+        super().setUp()
 
         self.test_instance.signal_map = {
                 object(): object(),
@@ -874,7 +874,7 @@ class change_working_directory_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(change_working_directory_TestCase, self).setUp()
+        super().setUp()
 
         self.test_directory = object()
         self.test_args = dict(
@@ -924,7 +924,7 @@ class change_root_directory_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(change_root_directory_TestCase, self).setUp()
+        super().setUp()
 
         self.test_directory = object()
         self.test_args = dict(
@@ -995,7 +995,7 @@ class change_file_creation_mask_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(change_file_creation_mask_TestCase, self).setUp()
+        super().setUp()
 
         self.test_mask = object()
         self.test_args = dict(
@@ -1044,7 +1044,7 @@ class change_process_owner_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(change_process_owner_TestCase, self).setUp()
+        super().setUp()
 
         setup_daemon_context_fixtures(self)
 
@@ -1218,7 +1218,7 @@ class prevent_core_dump_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(prevent_core_dump_TestCase, self).setUp()
+        super().setUp()
 
     def test_sets_core_limit_to_zero(
             self,
@@ -1258,7 +1258,7 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up fixtures for this test case. """
-        super(get_stream_file_descriptors_TestCase, self).setUp()
+        super().setUp()
 
         self.patch_get_maximum_file_descriptors()
         self.fake_streams = dict(
@@ -1327,7 +1327,7 @@ class close_file_descriptor_if_open_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(close_file_descriptor_if_open_TestCase, self).setUp()
+        super().setUp()
 
         self.fake_fd = 274
 
@@ -1653,7 +1653,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(close_all_open_files_TestCase, self).setUp()
+        super().setUp()
 
         get_maximum_file_descriptors_patch = (
                 make_get_maximum_file_descriptors_patch(
@@ -1716,7 +1716,7 @@ class detach_process_context_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(detach_process_context_TestCase, self).setUp()
+        super().setUp()
 
         self.mock_module_os = unittest.mock.MagicMock(wraps=os)
 
@@ -1860,7 +1860,7 @@ class is_socket_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(is_socket_TestCase, self).setUp()
+        super().setUp()
 
         def fake_getsockopt(level, optname, buflen=None):
             result = object()
@@ -1918,7 +1918,7 @@ class is_process_started_by_superserver_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(is_process_started_by_superserver_TestCase, self).setUp()
+        super().setUp()
 
         def fake_is_socket(fd):
             if sys.__stdin__.fileno() == fd:
@@ -2014,7 +2014,7 @@ class redirect_stream_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(redirect_stream_TestCase, self).setUp()
+        super().setUp()
 
         self.test_system_stream = FakeFileDescriptorStringIO()
         self.test_target_stream = FakeFileDescriptorStringIO()
@@ -2063,7 +2063,7 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(make_default_signal_map_TestCase, self).setUp()
+        super().setUp()
 
         # Use whatever default string type this Python version needs.
         signal_module_name = str('signal')
@@ -2124,7 +2124,7 @@ class set_signal_handlers_TestCase(scaffold.TestCase):
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(set_signal_handlers_TestCase, self).setUp()
+        super().setUp()
 
         self.signal_handler_map = {
                 signal.SIGQUIT: object(),
