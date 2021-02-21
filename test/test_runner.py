@@ -26,7 +26,7 @@ import signal
 import sys
 
 import lockfile
-import mock
+import unittest.mock
 
 from . import scaffold
 from .scaffold import unicode
@@ -138,7 +138,7 @@ def setup_runner_fixtures(testcase):
 
     testcase.runner_scenarios = make_runner_scenarios()
 
-    patcher_stderr = mock.patch.object(
+    patcher_stderr = unittest.mock.patch.object(
             sys, "stderr",
             new=FakeFileDescriptorStringIO())
     testcase.fake_stderr = patcher_stderr.start()
@@ -146,7 +146,7 @@ def setup_runner_fixtures(testcase):
 
     simple_scenario = testcase.runner_scenarios['simple']
 
-    testcase.mock_runner_lockfile = mock.MagicMock(
+    testcase.mock_runner_lockfile = unittest.mock.MagicMock(
             spec=daemon.pidfile.TimeoutPIDLockFile)
     apply_lockfile_method_mocks(
             testcase.mock_runner_lockfile,
@@ -154,7 +154,7 @@ def setup_runner_fixtures(testcase):
             simple_scenario['pidlockfile_scenario'])
     testcase.mock_runner_lockfile.path = simple_scenario['pidfile_path']
 
-    patcher_lockfile_class = mock.patch.object(
+    patcher_lockfile_class = unittest.mock.patch.object(
             daemon.pidfile, "TimeoutPIDLockFile",
             return_value=testcase.mock_runner_lockfile)
     patcher_lockfile_class.start()
@@ -169,11 +169,11 @@ def setup_runner_fixtures(testcase):
             self.pidfile_path = simple_scenario['pidfile_path']
             self.pidfile_timeout = simple_scenario['pidfile_timeout']
 
-        run = mock.MagicMock(name="TestApp.run")
+        run = unittest.mock.MagicMock(name="TestApp.run")
 
     testcase.TestApp = TestApp
 
-    patcher_runner_daemoncontext = mock.patch.object(
+    patcher_runner_daemoncontext = unittest.mock.patch.object(
             daemon.runner, "DaemonContext", autospec=True)
     patcher_runner_daemoncontext.start()
     testcase.addCleanup(patcher_runner_daemoncontext.stop)
@@ -198,20 +198,20 @@ def setup_runner_fixtures(testcase):
         result.buffering = buffering
         return result
 
-    mock_open = mock.mock_open()
+    mock_open = unittest.mock.mock_open()
     mock_open.side_effect = fake_open
 
-    func_patcher_builtin_open = mock.patch.object(
+    func_patcher_builtin_open = unittest.mock.patch.object(
             builtins, "open",
             new=mock_open)
     func_patcher_builtin_open.start()
     testcase.addCleanup(func_patcher_builtin_open.stop)
 
-    func_patcher_os_kill = mock.patch.object(os, "kill")
+    func_patcher_os_kill = unittest.mock.patch.object(os, "kill")
     func_patcher_os_kill.start()
     testcase.addCleanup(func_patcher_os_kill.stop)
 
-    patcher_sys_argv = mock.patch.object(
+    patcher_sys_argv = unittest.mock.patch.object(
             sys, "argv",
             new=testcase.valid_argv_params['start'])
     patcher_sys_argv.start()
@@ -240,7 +240,7 @@ class DaemonRunner_TestCase(DaemonRunner_BaseTestCase):
         """ Set up test fixtures. """
         super(DaemonRunner_TestCase, self).setUp()
 
-        func_patcher_parse_args = mock.patch.object(
+        func_patcher_parse_args = unittest.mock.patch.object(
                 daemon.runner.DaemonRunner, "parse_args")
         func_patcher_parse_args.start()
         self.addCleanup(func_patcher_parse_args.stop)
@@ -384,7 +384,7 @@ class DaemonRunner_parse_args_TestCase(DaemonRunner_BaseTestCase):
         """ Set up test fixtures. """
         super(DaemonRunner_parse_args_TestCase, self).setUp()
 
-        func_patcher_usage_exit = mock.patch.object(
+        func_patcher_usage_exit = unittest.mock.patch.object(
                 daemon.runner.DaemonRunner, "_usage_exit",
                 side_effect=NotImplementedError)
         func_patcher_usage_exit.start()
@@ -413,7 +413,7 @@ class DaemonRunner_parse_args_TestCase(DaemonRunner_BaseTestCase):
         instance = self.test_instance
         expected_action = 'start'
         argv = self.valid_argv_params['start']
-        with mock.patch.object(sys, "argv", new=argv):
+        with unittest.mock.patch.object(sys, "argv", new=argv):
             instance.parse_args()
         self.assertEqual(expected_action, instance.action)
 
@@ -568,8 +568,8 @@ class DaemonRunner_do_action_stop_TestCase(DaemonRunner_BaseTestCase):
         self.assertIn(expected_message_content, unicode(exc))
 
 
-@mock.patch.object(daemon.runner.DaemonRunner, "_start")
-@mock.patch.object(daemon.runner.DaemonRunner, "_stop")
+@unittest.mock.patch.object(daemon.runner.DaemonRunner, "_start")
+@unittest.mock.patch.object(daemon.runner.DaemonRunner, "_stop")
 class DaemonRunner_do_action_restart_TestCase(DaemonRunner_BaseTestCase):
     """ Test cases for DaemonRunner.do_action method, action 'restart'. """
 
@@ -591,7 +591,7 @@ class DaemonRunner_do_action_restart_TestCase(DaemonRunner_BaseTestCase):
         mock_func_daemonrunner_stop.assert_called_with()
 
 
-@mock.patch.object(sys, "stderr")
+@unittest.mock.patch.object(sys, "stderr")
 class emit_message_TestCase(scaffold.TestCase):
     """ Test cases for ‘emit_message’ function. """
 
@@ -605,15 +605,15 @@ class emit_message_TestCase(scaffold.TestCase):
     def test_writes_to_specified_stream(self, mock_stderr):
         """ Should write message to specified stream. """
         test_message = self.getUniqueString()
-        mock_stream = mock.MagicMock()
+        mock_stream = unittest.mock.MagicMock()
         daemon.runner.emit_message(test_message, stream=mock_stream)
-        mock_stream.write.assert_called_with(mock.ANY)
+        mock_stream.write.assert_called_with(unittest.mock.ANY)
 
     def test_writes_to_stderr_by_default(self, mock_stderr):
         """ Should write message to ‘sys.stderr’ by default. """
         test_message = self.getUniqueString()
         daemon.runner.emit_message(test_message)
-        mock_stderr.write.assert_called_with(mock.ANY)
+        mock_stderr.write.assert_called_with(unittest.mock.ANY)
 
 
 class is_pidfile_stale_TestCase(scaffold.TestCase):
@@ -623,13 +623,14 @@ class is_pidfile_stale_TestCase(scaffold.TestCase):
         """ Set up test fixtures. """
         super(is_pidfile_stale_TestCase, self).setUp()
 
-        func_patcher_os_kill = mock.patch.object(os, "kill")
+        func_patcher_os_kill = unittest.mock.patch.object(os, "kill")
         func_patcher_os_kill.start()
         self.addCleanup(func_patcher_os_kill.stop)
         os.kill.return_value = None
 
         self.test_pid = self.getUniqueInteger()
-        self.test_pidfile = mock.MagicMock(daemon.pidfile.TimeoutPIDLockFile)
+        self.test_pidfile = unittest.mock.MagicMock(
+                daemon.pidfile.TimeoutPIDLockFile)
         self.test_pidfile.read_pid.return_value = self.test_pid
 
     def test_returns_false_if_no_pid_in_file(self):

@@ -25,7 +25,7 @@ import sys
 import tempfile
 from types import ModuleType
 
-import mock
+import unittest.mock
 
 from . import scaffold
 from .scaffold import unicode
@@ -74,7 +74,7 @@ def setup_daemon_context_fixtures(testcase):
     setup_pidfile_fixtures(testcase)
 
     testcase.fake_pidfile_path = tempfile.mktemp()
-    testcase.mock_pidlockfile = mock.MagicMock()
+    testcase.mock_pidlockfile = unittest.mock.MagicMock()
     testcase.mock_pidlockfile.path = testcase.fake_pidfile_path
 
     testcase.test_pwent = pwd.struct_passwd(sequence=[
@@ -95,7 +95,7 @@ def setup_daemon_context_fixtures(testcase):
             raise KeyError("getpwuid(): uid not found: %(uid)r" % vars())
         return pwent
 
-    func_patcher_pwd_getpwuid = mock.patch.object(
+    func_patcher_pwd_getpwuid = unittest.mock.patch.object(
             pwd, "getpwuid",
             side_effect=fake_getpwuid)
     func_patcher_pwd_getpwuid.start()
@@ -113,14 +113,14 @@ def setup_daemon_context_fixtures(testcase):
 fake_default_signal_map = object()
 
 
-@mock.patch.object(
+@unittest.mock.patch.object(
         daemon.daemon, "is_detach_process_context_required",
         new=(lambda: True))
-@mock.patch.object(
+@unittest.mock.patch.object(
         daemon.daemon, "make_default_signal_map",
         new=(lambda: fake_default_signal_map))
-@mock.patch.object(os, "setgid", new=(lambda x: object()))
-@mock.patch.object(os, "setuid", new=(lambda x: object()))
+@unittest.mock.patch.object(os, "setgid", new=(lambda x: object()))
+@unittest.mock.patch.object(os, "setuid", new=(lambda x: object()))
 class DaemonContext_BaseTestCase(scaffold.TestCase):
     """ Base class for DaemonContext test case classes. """
 
@@ -337,9 +337,9 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
 
         self.test_instance._is_open = False
 
-        self.mock_module_daemon = mock.MagicMock()
+        self.mock_module_daemon = unittest.mock.MagicMock()
         daemon_func_patchers = dict(
-                (func_name, mock.patch.object(
+                (func_name, unittest.mock.patch.object(
                     daemon.daemon, func_name))
                 for func_name in [
                     "detach_process_context",
@@ -358,7 +358,8 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
             self.addCleanup(patcher.stop)
             self.mock_module_daemon.attach_mock(mock_func, func_name)
 
-        self.mock_module_daemon.attach_mock(mock.Mock(), 'DaemonContext')
+        self.mock_module_daemon.attach_mock(
+                unittest.mock.Mock(), 'DaemonContext')
 
         self.test_files_preserve_fds = object()
         self.test_signal_handler_map = object()
@@ -367,7 +368,7 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 '_make_signal_handler_map': self.test_signal_handler_map,
                 }
         daemoncontext_func_patchers = dict(
-                (func_name, mock.patch.object(
+                (func_name, unittest.mock.patch.object(
                     daemon.daemon.DaemonContext,
                     func_name,
                     return_value=return_value))
@@ -389,21 +390,33 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
         self.mock_module_daemon.attach_mock(
                 self.mock_pidlockfile, 'pidlockfile')
         expected_calls = [
-                mock.call.change_root_directory(mock.ANY),
-                mock.call.prevent_core_dump(),
-                mock.call.change_file_creation_mask(mock.ANY),
-                mock.call.change_working_directory(mock.ANY),
-                mock.call.change_process_owner(mock.ANY, mock.ANY, mock.ANY),
-                mock.call.detach_process_context(),
-                mock.call.DaemonContext._make_signal_handler_map(),
-                mock.call.set_signal_handlers(mock.ANY),
-                mock.call.DaemonContext._get_exclude_file_descriptors(),
-                mock.call.close_all_open_files(exclude=mock.ANY),
-                mock.call.redirect_stream(mock.ANY, mock.ANY),
-                mock.call.redirect_stream(mock.ANY, mock.ANY),
-                mock.call.redirect_stream(mock.ANY, mock.ANY),
-                mock.call.pidlockfile.__enter__(),
-                mock.call.register_atexit_function(mock.ANY),
+                unittest.mock.call.change_root_directory(
+                        unittest.mock.ANY),
+                unittest.mock.call.prevent_core_dump(),
+                unittest.mock.call.change_file_creation_mask(
+                        unittest.mock.ANY),
+                unittest.mock.call.change_working_directory(
+                        unittest.mock.ANY),
+                unittest.mock.call.change_process_owner(
+                        unittest.mock.ANY,
+                        unittest.mock.ANY,
+                        unittest.mock.ANY),
+                unittest.mock.call.detach_process_context(),
+                unittest.mock.call.DaemonContext._make_signal_handler_map(),
+                unittest.mock.call.set_signal_handlers(
+                        unittest.mock.ANY),
+                unittest.mock.call.DaemonContext._get_exclude_file_descriptors(),
+                unittest.mock.call.close_all_open_files(
+                        exclude=unittest.mock.ANY),
+                unittest.mock.call.redirect_stream(
+                        unittest.mock.ANY, unittest.mock.ANY),
+                unittest.mock.call.redirect_stream(
+                        unittest.mock.ANY, unittest.mock.ANY),
+                unittest.mock.call.redirect_stream(
+                        unittest.mock.ANY, unittest.mock.ANY),
+                unittest.mock.call.pidlockfile.__enter__(),
+                unittest.mock.call.register_atexit_function(
+                        unittest.mock.ANY),
                 ]
         instance.open()
         self.mock_module_daemon.assert_has_calls(expected_calls)
@@ -514,9 +527,9 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 self.stream_files_by_name[name]
                 for name in ['stdin', 'stdout', 'stderr'])
         expected_calls = [
-                mock.call(system_stdin, target_stdin),
-                mock.call(system_stdout, target_stdout),
-                mock.call(system_stderr, target_stderr),
+                unittest.mock.call(system_stdin, target_stdin),
+                unittest.mock.call(system_stdout, target_stdout),
+                unittest.mock.call(system_stderr, target_stderr),
                 ]
         instance.open()
         self.mock_module_daemon.redirect_stream.assert_has_calls(
@@ -582,7 +595,7 @@ class DaemonContext_close_TestCase(DaemonContext_BaseTestCase):
         self.assertEqual(False, instance.is_open)
 
 
-@mock.patch.object(daemon.daemon.DaemonContext, "open")
+@unittest.mock.patch.object(daemon.daemon.DaemonContext, "open")
 class DaemonContext_context_manager_enter_TestCase(DaemonContext_BaseTestCase):
     """ Test cases for DaemonContext.__enter__ method. """
 
@@ -600,7 +613,7 @@ class DaemonContext_context_manager_enter_TestCase(DaemonContext_BaseTestCase):
         self.assertIs(result, expected_result)
 
 
-@mock.patch.object(daemon.daemon.DaemonContext, "close")
+@unittest.mock.patch.object(daemon.daemon.DaemonContext, "close")
 class DaemonContext_context_manager_exit_TestCase(DaemonContext_BaseTestCase):
     """ Test cases for DaemonContext.__exit__ method. """
 
@@ -833,7 +846,7 @@ class DaemonContext_make_signal_handler_map_TestCase(
         def fake_make_signal_handler(target):
             return self.test_signal_handlers[target]
 
-        func_patcher_make_signal_handler = mock.patch.object(
+        func_patcher_make_signal_handler = unittest.mock.patch.object(
                 daemon.daemon.DaemonContext, "_make_signal_handler",
                 side_effect=fake_make_signal_handler)
         self.mock_func_make_signal_handler = (
@@ -855,7 +868,7 @@ except NameError:
     FileNotFoundError = functools.partial(IOError, errno.ENOENT)
 
 
-@mock.patch.object(os, "chdir")
+@unittest.mock.patch.object(os, "chdir")
 class change_working_directory_TestCase(scaffold.TestCase):
     """ Test cases for change_working_directory function. """
 
@@ -904,8 +917,8 @@ class change_working_directory_TestCase(scaffold.TestCase):
         self.assertIn(unicode(test_error), unicode(exc))
 
 
-@mock.patch.object(os, "chroot")
-@mock.patch.object(os, "chdir")
+@unittest.mock.patch.object(os, "chroot")
+@unittest.mock.patch.object(os, "chdir")
 class change_root_directory_TestCase(scaffold.TestCase):
     """ Test cases for change_root_directory function. """
 
@@ -976,7 +989,7 @@ class change_root_directory_TestCase(scaffold.TestCase):
         self.assertIn(unicode(test_error), unicode(exc))
 
 
-@mock.patch.object(os, "umask")
+@unittest.mock.patch.object(os, "umask")
 class change_file_creation_mask_TestCase(scaffold.TestCase):
     """ Test cases for change_file_creation_mask function. """
 
@@ -1023,9 +1036,9 @@ class change_file_creation_mask_TestCase(scaffold.TestCase):
         self.assertIn(unicode(test_error), unicode(exc))
 
 
-@mock.patch.object(os, "initgroups")
-@mock.patch.object(os, "setgid")
-@mock.patch.object(os, "setuid")
+@unittest.mock.patch.object(os, "initgroups")
+@unittest.mock.patch.object(os, "setgid")
+@unittest.mock.patch.object(os, "setuid")
 class change_process_owner_TestCase(scaffold.TestCase):
     """ Test cases for change_process_owner function. """
 
@@ -1055,14 +1068,15 @@ class change_process_owner_TestCase(scaffold.TestCase):
             """
         args = self.test_args
         args['initgroups'] = True
-        mock_os_module = mock.MagicMock()
+        mock_os_module = unittest.mock.MagicMock()
         mock_os_module.attach_mock(mock_func_os_setuid, "setuid")
         mock_os_module.attach_mock(mock_func_os_setgid, "setgid")
         mock_os_module.attach_mock(mock_func_os_initgroups, "initgroups")
         daemon.daemon.change_process_owner(**args)
         mock_os_module.assert_has_calls([
-                mock.call.initgroups(mock.ANY, mock.ANY),
-                mock.call.setuid(mock.ANY),
+                unittest.mock.call.initgroups(
+                        unittest.mock.ANY, unittest.mock.ANY),
+                unittest.mock.call.setuid(unittest.mock.ANY),
                 ])
 
     def test_sets_gid_and_uid_in_order(
@@ -1078,14 +1092,14 @@ class change_process_owner_TestCase(scaffold.TestCase):
             """
         args = self.test_args
         args['initgroups'] = False
-        mock_os_module = mock.MagicMock()
+        mock_os_module = unittest.mock.MagicMock()
         mock_os_module.attach_mock(mock_func_os_setuid, "setuid")
         mock_os_module.attach_mock(mock_func_os_setgid, "setgid")
         mock_os_module.attach_mock(mock_func_os_initgroups, "initgroups")
         daemon.daemon.change_process_owner(**args)
         mock_os_module.assert_has_calls([
-                mock.call.setgid(mock.ANY),
-                mock.call.setuid(mock.ANY),
+                unittest.mock.call.setgid(unittest.mock.ANY),
+                unittest.mock.call.setuid(unittest.mock.ANY),
                 ])
 
     def test_specifies_username_to_initgroups(
@@ -1097,7 +1111,8 @@ class change_process_owner_TestCase(scaffold.TestCase):
         args['initgroups'] = True
         expected_username = self.test_pwent.pw_name
         daemon.daemon.change_process_owner(**args)
-        mock_func_os_initgroups.assert_called_with(expected_username, mock.ANY)
+        mock_func_os_initgroups.assert_called_with(
+                expected_username, unittest.mock.ANY)
 
     def test_sets_group_id_to_gid_using_initgroups(
             self,
@@ -1108,7 +1123,8 @@ class change_process_owner_TestCase(scaffold.TestCase):
         args['initgroups'] = True
         expected_gid = self.test_gid
         daemon.daemon.change_process_owner(**args)
-        mock_func_os_initgroups.assert_called_once_with(mock.ANY, expected_gid)
+        mock_func_os_initgroups.assert_called_once_with(
+                unittest.mock.ANY, expected_gid)
 
     def test_changes_group_id_to_gid_using_setgid(
             self,
@@ -1191,9 +1207,12 @@ RLimitResult = collections.namedtuple('RLimitResult', ['soft', 'hard'])
 fake_RLIMIT_CORE = object()
 
 
-@mock.patch.object(resource, "RLIMIT_CORE", new=fake_RLIMIT_CORE)
-@mock.patch.object(resource, "setrlimit", side_effect=(lambda x, y: None))
-@mock.patch.object(resource, "getrlimit", side_effect=(lambda x: None))
+@unittest.mock.patch.object(
+        resource, "RLIMIT_CORE", new=fake_RLIMIT_CORE)
+@unittest.mock.patch.object(
+        resource, "setrlimit", side_effect=(lambda x, y: None))
+@unittest.mock.patch.object(
+        resource, "getrlimit", side_effect=(lambda x: None))
 class prevent_core_dump_TestCase(scaffold.TestCase):
     """ Test cases for prevent_core_dump function. """
 
@@ -1250,7 +1269,7 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
 
     def patch_get_maximum_file_descriptors(self):
         """ Patch the function `get_maximum_file_descriptors`. """
-        func_patcher = mock.patch.object(
+        func_patcher = unittest.mock.patch.object(
                 daemon.daemon, "get_maximum_file_descriptors",
                 return_value=self.fake_maxfd)
         self.mock_get_maximum_file_descriptors = func_patcher.start()
@@ -1274,7 +1293,7 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
     def test_omits_stream_if_stream_has_no_fileno(self):
         """ Should omit a stream that has no `fileno` method. """
         test_kwargs = dict(**self.fake_streams)
-        fake_stdin_fileno_method = mock.patch.object(
+        fake_stdin_fileno_method = unittest.mock.patch.object(
             self.fake_streams['stdin'], 'fileno', return_value=None)
         with fake_stdin_fileno_method:
             result = daemon.daemon.get_stream_file_descriptors(**test_kwargs)
@@ -1302,7 +1321,7 @@ def make_fake_os_close_raising_error(error):
     return fake_os_close
 
 
-@mock.patch.object(os, "close")
+@unittest.mock.patch.object(os, "close")
 class close_file_descriptor_if_open_TestCase(scaffold.TestCase):
     """ Test cases for close_file_descriptor_if_open function. """
 
@@ -1411,10 +1430,13 @@ def fake_getrlimit_nofile_hard_large(resource):
     return result
 
 
-@mock.patch.object(daemon.daemon, "MAXFD", new=fake_default_maxfd)
-@mock.patch.object(resource, "RLIMIT_NOFILE", new=fake_RLIMIT_NOFILE)
-@mock.patch.object(resource, "RLIM_INFINITY", new=fake_RLIM_INFINITY)
-@mock.patch.object(
+@unittest.mock.patch.object(
+        daemon.daemon, "MAXFD", new=fake_default_maxfd)
+@unittest.mock.patch.object(
+        resource, "RLIMIT_NOFILE", new=fake_RLIMIT_NOFILE)
+@unittest.mock.patch.object(
+        resource, "RLIM_INFINITY", new=fake_RLIM_INFINITY)
+@unittest.mock.patch.object(
         resource, "getrlimit",
         side_effect=fake_getrlimit_nofile_hard_large)
 class get_maximum_file_descriptors_TestCase(scaffold.TestCase):
@@ -1447,7 +1469,7 @@ def make_get_maximum_file_descriptors_patch(self, fake_maxfd):
         :param fake_maxfd: The fake maximum file descriptor value.
         :return: The `unittest.mock.patch` object.
         """
-    func_patcher = mock.patch.object(
+    func_patcher = unittest.mock.patch.object(
         daemon.daemon, "get_maximum_file_descriptors",
         return_value=fake_maxfd)
     return func_patcher
@@ -1585,7 +1607,7 @@ class _get_candidate_file_descriptor_ranges_TestCase(
         self.assertEqual(result, self.expected_result)
 
 
-@mock.patch.object(os, "closerange")
+@unittest.mock.patch.object(os, "closerange")
 class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):
     """ Test cases for function `_close_file_descriptor_ranges`. """
 
@@ -1597,7 +1619,7 @@ class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):
                         ],
                     },
                 'expected_os_closerange_calls': [
-                    mock.call(0, 10),
+                    unittest.mock.call(0, 10),
                     ],
                 }),
             ('ranges-three', {
@@ -1609,9 +1631,9 @@ class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):
                         ],
                     },
                 'expected_os_closerange_calls': [
-                    mock.call(5, 10),
-                    mock.call(0, 3),
-                    mock.call(15, 20),
+                    unittest.mock.call(5, 10),
+                    unittest.mock.call(0, 3),
+                    unittest.mock.call(15, 20),
                     ],
                 }),
             ]
@@ -1643,7 +1665,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
 
     def patch_os_closerange(self):
         """ Patch `os.closerange` function for this test case. """
-        func_patcher = mock.patch.object(os, "closerange")
+        func_patcher = unittest.mock.patch.object(os, "closerange")
         self.mock_func_os_closerange = func_patcher.start()
         self.addCleanup(func_patcher.stop)
 
@@ -1655,9 +1677,9 @@ class close_all_open_files_TestCase(scaffold.TestCase):
                 )
         daemon.daemon.close_all_open_files(**test_kwargs)
         expected_os_closerange_calls = [
-                mock.call(0, 3),
-                mock.call(4, 7),
-                mock.call(8, self.fake_maxfd),
+                unittest.mock.call(0, 3),
+                unittest.mock.call(4, 7),
+                unittest.mock.call(8, self.fake_maxfd),
                 ]
         self.mock_func_os_closerange.assert_has_calls(
                 expected_os_closerange_calls, any_order=True)
@@ -1670,7 +1692,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
                 )
         daemon.daemon.close_all_open_files(**test_kwargs)
         expected_os_closerange_calls = [
-                mock.call(0, self.fake_maxfd),
+                unittest.mock.call(0, self.fake_maxfd),
                 ]
         self.mock_func_os_closerange.assert_has_calls(
                 expected_os_closerange_calls, any_order=True)
@@ -1680,7 +1702,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
         test_kwargs = dict()
         daemon.daemon.close_all_open_files(**test_kwargs)
         expected_os_closerange_calls = [
-                mock.call(0, self.fake_maxfd),
+                unittest.mock.call(0, self.fake_maxfd),
                 ]
         self.mock_func_os_closerange.assert_has_calls(
                 expected_os_closerange_calls, any_order=True)
@@ -1696,17 +1718,17 @@ class detach_process_context_TestCase(scaffold.TestCase):
         """ Set up test fixtures. """
         super(detach_process_context_TestCase, self).setUp()
 
-        self.mock_module_os = mock.MagicMock(wraps=os)
+        self.mock_module_os = unittest.mock.MagicMock(wraps=os)
 
         fake_pids = [0, 0]
-        func_patcher_os_fork = mock.patch.object(
+        func_patcher_os_fork = unittest.mock.patch.object(
                 os, "fork",
                 side_effect=iter(fake_pids))
         self.mock_func_os_fork = func_patcher_os_fork.start()
         self.addCleanup(func_patcher_os_fork.stop)
         self.mock_module_os.attach_mock(self.mock_func_os_fork, "fork")
 
-        func_patcher_os_setsid = mock.patch.object(os, "setsid")
+        func_patcher_os_setsid = unittest.mock.patch.object(os, "setsid")
         self.mock_func_os_setsid = func_patcher_os_setsid.start()
         self.addCleanup(func_patcher_os_setsid.stop)
         self.mock_module_os.attach_mock(self.mock_func_os_setsid, "setsid")
@@ -1714,7 +1736,7 @@ class detach_process_context_TestCase(scaffold.TestCase):
         def raise_os_exit(status=None):
             raise self.FakeOSExit(status)
 
-        func_patcher_os_force_exit = mock.patch.object(
+        func_patcher_os_force_exit = unittest.mock.patch.object(
                 os, "_exit",
                 side_effect=raise_os_exit)
         self.mock_func_os_force_exit = func_patcher_os_force_exit.start()
@@ -1729,8 +1751,8 @@ class detach_process_context_TestCase(scaffold.TestCase):
                 self.FakeOSExit,
                 daemon.daemon.detach_process_context)
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
-                mock.call._exit(0),
+                unittest.mock.call.fork(),
+                unittest.mock.call._exit(0),
                 ])
 
     def test_first_fork_error_raises_error(self):
@@ -1753,15 +1775,15 @@ class detach_process_context_TestCase(scaffold.TestCase):
                 daemon.daemon.detach_process_context)
         self.assertEqual(test_error, exc.__cause__)
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
+                unittest.mock.call.fork(),
                 ])
 
     def test_child_starts_new_process_group(self):
         """ Child should start new process group. """
         daemon.daemon.detach_process_context()
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
-                mock.call.setsid(),
+                unittest.mock.call.fork(),
+                unittest.mock.call.setsid(),
                 ])
 
     def test_child_forks_next_parent_exits(self):
@@ -1772,10 +1794,10 @@ class detach_process_context_TestCase(scaffold.TestCase):
                 self.FakeOSExit,
                 daemon.daemon.detach_process_context)
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
-                mock.call.setsid(),
-                mock.call.fork(),
-                mock.call._exit(0),
+                unittest.mock.call.fork(),
+                unittest.mock.call.setsid(),
+                unittest.mock.call.fork(),
+                unittest.mock.call._exit(0),
                 ])
 
     def test_second_fork_error_reports_to_stderr(self):
@@ -1798,22 +1820,22 @@ class detach_process_context_TestCase(scaffold.TestCase):
                 daemon.daemon.detach_process_context)
         self.assertEqual(test_error, exc.__cause__)
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
-                mock.call.setsid(),
-                mock.call.fork(),
+                unittest.mock.call.fork(),
+                unittest.mock.call.setsid(),
+                unittest.mock.call.fork(),
                 ])
 
     def test_child_forks_next_child_continues(self):
         """ Child should fork, then continue if child. """
         daemon.daemon.detach_process_context()
         self.mock_module_os.assert_has_calls([
-                mock.call.fork(),
-                mock.call.setsid(),
-                mock.call.fork(),
+                unittest.mock.call.fork(),
+                unittest.mock.call.setsid(),
+                unittest.mock.call.fork(),
                 ])
 
 
-@mock.patch("os.getppid", return_value=765)
+@unittest.mock.patch("os.getppid", return_value=765)
 class is_process_started_by_init_TestCase(scaffold.TestCase):
     """ Test cases for is_process_started_by_init function. """
 
@@ -1852,13 +1874,13 @@ class is_socket_TestCase(scaffold.TestCase):
                 errno.ENOTSOCK,
                 "Socket operation on non-socket")
 
-        self.mock_socket = mock.MagicMock(spec=socket.socket)
+        self.mock_socket = unittest.mock.MagicMock(spec=socket.socket)
         self.mock_socket.getsockopt.side_effect = self.fake_socket_error
 
         def fake_socket_fromfd(fd, family, type, proto=None):
             return self.mock_socket
 
-        func_patcher_socket_fromfd = mock.patch.object(
+        func_patcher_socket_fromfd = unittest.mock.patch.object(
                 socket, "fromfd",
                 side_effect=fake_socket_fromfd)
         func_patcher_socket_fromfd.start()
@@ -1907,7 +1929,7 @@ class is_process_started_by_superserver_TestCase(scaffold.TestCase):
 
         self.fake_stdin_is_socket_func = (lambda: False)
 
-        func_patcher_is_socket = mock.patch.object(
+        func_patcher_is_socket = unittest.mock.patch.object(
                 daemon.daemon, "is_socket",
                 side_effect=fake_is_socket)
         func_patcher_is_socket.start()
@@ -1927,10 +1949,10 @@ class is_process_started_by_superserver_TestCase(scaffold.TestCase):
         self.assertIs(result, expected_result)
 
 
-@mock.patch.object(
+@unittest.mock.patch.object(
         daemon.daemon, "is_process_started_by_superserver",
         return_value=False)
-@mock.patch.object(
+@unittest.mock.patch.object(
         daemon.daemon, "is_process_started_by_init",
         return_value=False)
 class is_detach_process_context_required_TestCase(scaffold.TestCase):
@@ -1986,7 +2008,7 @@ def setup_streams_fixtures(testcase):
             )
 
 
-@mock.patch.object(os, "dup2")
+@unittest.mock.patch.object(os, "dup2")
 class redirect_stream_TestCase(scaffold.TestCase):
     """ Test cases for redirect_stream function. """
 
@@ -2005,7 +2027,7 @@ class redirect_stream_TestCase(scaffold.TestCase):
                 raise FileNotFoundError("No such file", path)
             return result
 
-        func_patcher_os_open = mock.patch.object(
+        func_patcher_os_open = unittest.mock.patch.object(
                 os, "open",
                 side_effect=fake_os_open)
         self.mock_func_os_open = func_patcher_os_open.start()
@@ -2059,7 +2081,7 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
         for name in fake_signal_names:
             setattr(self.fake_signal_module, name, object())
 
-        module_patcher_signal = mock.patch.object(
+        module_patcher_signal = unittest.mock.patch.object(
                 daemon.daemon, "signal", new=self.fake_signal_module)
         module_patcher_signal.start()
         self.addCleanup(module_patcher_signal.stop)
@@ -2096,7 +2118,7 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
         self.assertEqual(expected_result, result)
 
 
-@mock.patch.object(daemon.daemon.signal, "signal")
+@unittest.mock.patch.object(daemon.daemon.signal, "signal")
 class set_signal_handlers_TestCase(scaffold.TestCase):
     """ Test cases for set_signal_handlers function. """
 
@@ -2114,13 +2136,13 @@ class set_signal_handlers_TestCase(scaffold.TestCase):
         """ Should set signal handler for each item in map. """
         signal_handler_map = self.signal_handler_map
         expected_calls = [
-                mock.call(signal_number, handler)
+                unittest.mock.call(signal_number, handler)
                 for (signal_number, handler) in signal_handler_map.items()]
         daemon.daemon.set_signal_handlers(signal_handler_map)
         self.assertEquals(expected_calls, mock_func_signal_signal.mock_calls)
 
 
-@mock.patch.object(daemon.daemon.atexit, "register")
+@unittest.mock.patch.object(daemon.daemon.atexit, "register")
 class register_atexit_function_TestCase(scaffold.TestCase):
     """ Test cases for register_atexit_function function. """
 

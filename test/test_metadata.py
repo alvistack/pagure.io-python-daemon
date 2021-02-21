@@ -24,7 +24,7 @@ except ImportError:
     # Python 2 standard library.
     import urlparse
 
-import mock
+import unittest.mock
 import pkg_resources
 import testtools.helpers
 import testtools.matchers
@@ -138,7 +138,7 @@ class YearRange_TestCase(scaffold.TestCaseWithScenarios):
 FakeYearRange = collections.namedtuple('FakeYearRange', ['begin', 'end'])
 
 
-@mock.patch.object(metadata, 'YearRange', new=FakeYearRange)
+@unittest.mock.patch.object(metadata, 'YearRange', new=FakeYearRange)
 class make_year_range_TestCase(scaffold.TestCaseWithScenarios):
     """ Test cases for ‘make_year_range’ function. """
 
@@ -285,7 +285,7 @@ def make_mock_distribution(
     """ Make a mock for a `pkg_resources.Distribution` object. """
     if metadata_resources is None:
         metadata_resources = {}
-    mock_distribution = mock.MagicMock(name='Distribution')
+    mock_distribution = unittest.mock.MagicMock(name='Distribution')
     mock_distribution.has_metadata.side_effect = functools.partial(
             fake_func_has_metadata,
             resource_names=metadata_resources.keys(),
@@ -301,7 +301,7 @@ def patch_metadata_distribution_name(*, testcase, distribution_name=None):
     """ Patch `metadata.distribution_name` for the `testcase`. """
     if distribution_name is None:
         distribution_name = testcase.mock_distribution_name
-    patcher_distribution_name = mock.patch.object(
+    patcher_distribution_name = unittest.mock.patch.object(
             metadata, 'distribution_name',
             new=distribution_name)
     patcher_distribution_name.start()
@@ -315,7 +315,7 @@ def patch_pkg_resources_get_distribution(
     """
     if mock_distribution is None:
         mock_distribution = testcase.mock_distribution
-    func_patcher_get_distribution = mock.patch.object(
+    func_patcher_get_distribution = unittest.mock.patch.object(
             pkg_resources, 'get_distribution')
     func_patcher_get_distribution.start()
     testcase.addCleanup(func_patcher_get_distribution.stop)
