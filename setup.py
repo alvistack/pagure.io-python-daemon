@@ -45,7 +45,6 @@ def test_suite():
 
 
 test_requirements = [
-        "unittest2 >=0.5.1",
         "testtools",
         "testscenarios >=0.4",
         "mock >=1.3",

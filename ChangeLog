@@ -20,6 +20,10 @@ Removed:
 
   Python 2 has been unsupported by the Python project since 2020.
 
+* Remove dependency on back-ported `unittest2`.
+
+  Thanks to Michał Górny for the merge request.
+
 
 Version 2.2.4
 =============
