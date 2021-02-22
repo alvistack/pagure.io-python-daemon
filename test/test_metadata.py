@@ -415,9 +415,13 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
                 'expected_resource_name': "lorem_ipsum.json",
                 'expected_version_info': {'version': "1.0"},
                 }),
-            ('not installed', {
-                'get_distribution_error': pkg_resources.DistributionNotFound(),
-                'expected_version_info': default_version_info,
+            ('no distribution', {
+                'test_distribution': None,
+                'expected_version_info': {
+                    'release_date': "UNKNOWN",
+                    'version': "UNKNOWN",
+                    'maintainer': "UNKNOWN",
+                    },
                 }),
             ('no version_info', {
                 'expected_version_info': default_version_info,
@@ -438,8 +442,6 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
 
         self.mock_distribution_name = "mock-dist"
         patch_metadata_distribution_name(testcase=self)
-        self.mock_distribution = make_mock_distribution(
-                metadata.distribution_name, metadata_resources=None)
 
         self.test_args = {}
         if hasattr(self, 'test_filename'):
@@ -458,18 +460,18 @@ class get_distribution_version_info_TestCase(scaffold.TestCaseWithScenarios):
                         self.test_version_info)
             self.test_metadata_resources = resources
 
-        self.mock_distribution = make_mock_distribution(
-                name=metadata.distribution_name,
-                metadata_resources=self.test_metadata_resources)
-        self.test_args['distribution'] = getattr(
-                self, 'test_distribution', self.mock_distribution)
+        if not hasattr(self, 'test_distribution'):
+            self.test_distribution = make_mock_distribution(
+                    metadata.distribution_name,
+                    metadata_resources=self.test_metadata_resources)
+        self.test_args['distribution'] = self.test_distribution
 
     def test_requests_specified_filename(self):
         """ The specified metadata resource name should be requested. """
-        if hasattr(self, 'get_distribution_error'):
-            self.skipTest("No access to distribution")
+        if self.test_distribution is None:
+            self.skipTest("No distribution specified")
         metadata.get_distribution_version_info(**self.test_args)
-        self.mock_distribution.has_metadata.assert_called_with(
+        self.test_distribution.has_metadata.assert_called_with(
                 self.expected_resource_name)
 
     def test_result_matches_expected_items(self):
