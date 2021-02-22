@@ -2,10 +2,10 @@
 # Python distributions required for static analysis of this code base.
 # Documentation: <URL:https://pip.readthedocs.io/en/stable/reference/pip_install/#requirements-file-format>.
 
--r base.txt
+--requirement base.txt
 
 # Python code-analysis tools.
-pycodestyle==2.4.0
+pycodestyle == 2.4.0
 
 
 # Local variables:
