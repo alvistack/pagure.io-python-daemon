@@ -2,6 +2,9 @@
 # Python distributions required for this code base.
 # Documentation: <URL:https://pip.readthedocs.io/en/stable/reference/pip_install/#requirements-file-format>.
 
+# The Python package manager.
+pip
+
 
 # Local variables:
 # coding: utf-8

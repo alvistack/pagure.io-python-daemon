@@ -5,7 +5,7 @@
 --requirement base.txt
 
 # Python code-analysis tools.
-pycodestyle == 2.4.0
+pycodestyle == 2.6.0
 
 
 # Local variables:
