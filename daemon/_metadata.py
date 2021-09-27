@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # daemon/_metadata.py
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # daemon/runner.py
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #

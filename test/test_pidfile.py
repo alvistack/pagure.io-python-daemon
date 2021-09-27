@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # test/test_pidfile.py
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
