@@ -8,12 +8,7 @@
 """ Unit test for ‘pidfile’ module.
     """
 
-try:
-    # Python 3 standard library.
-    import builtins
-except ImportError:
-    # Python 2 standard library.
-    import __builtin__ as builtins
+import builtins
 import errno
 import functools
 import io

@@ -14,12 +14,7 @@ import functools
 import json
 import re
 import unittest.mock
-try:
-    # Python 3 standard library.
-    import urllib.parse as urlparse
-except ImportError:
-    # Python 2 standard library.
-    import urlparse
+import urllib.parse as urlparse
 
 import pkg_resources
 import testtools.helpers
