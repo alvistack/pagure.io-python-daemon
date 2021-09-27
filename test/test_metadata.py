@@ -212,12 +212,6 @@ class metadata_content_TestCase(scaffold.TestCase):
                     url=metadata.url))
 
 
-try:
-    FileNotFoundError
-except NameError:
-    # Python 2 uses IOError.
-    FileNotFoundError = functools.partial(IOError, errno.ENOENT)
-
 version_info_filename = "version_info.json"
 
 

@@ -48,15 +48,6 @@ class FakeFileDescriptorStringIO(io.StringIO, object):
         pass
 
 
-try:
-    FileNotFoundError
-    PermissionError
-except NameError:
-    # Python 2 uses IOError.
-    FileNotFoundError = functools.partial(IOError, errno.ENOENT)
-    PermissionError = functools.partial(IOError, errno.EPERM)
-
-
 def make_pidlockfile_scenarios():
     """ Make a collection of scenarios for testing `PIDLockFile` instances.
 

@@ -859,13 +859,6 @@ class DaemonContext_make_signal_handler_map_TestCase(
         self.assertEqual(expected_result, result)
 
 
-try:
-    FileNotFoundError
-except NameError:
-    # Python 2 uses IOError.
-    FileNotFoundError = functools.partial(IOError, errno.ENOENT)
-
-
 @unittest.mock.patch.object(os, "chdir")
 class change_working_directory_TestCase(scaffold.TestCase):
     """ Test cases for change_working_directory function. """

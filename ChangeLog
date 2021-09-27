@@ -23,7 +23,7 @@ Removed:
   * unicode_literals
   * module-level metaclass `type`
   * unification of str with unicode type
-  * renamed standard library modules
+  * renamed standard library exceptions and modules
   * raise exception from context exception
 
   All these are default behaviour in Python 3 and need no special

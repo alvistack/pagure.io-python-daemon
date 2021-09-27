@@ -865,14 +865,6 @@ class changelog_to_version_info_collection_TestCase(
             self.assertThat(result, JsonEqual(self.expected_version_info))
 
 
-try:
-    FileNotFoundError
-    PermissionError
-except NameError:
-    # Python 2 uses OSError.
-    FileNotFoundError = functools.partial(IOError, errno.ENOENT)
-    PermissionError = functools.partial(IOError, errno.EPERM)
-
 fake_version_info = {
         'release_date': "2001-01-01", 'version': "2.0",
         'maintainer': None, 'body': None,
