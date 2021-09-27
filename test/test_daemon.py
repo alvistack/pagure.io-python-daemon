@@ -20,7 +20,6 @@ import socket
 import sys
 import tempfile
 from types import ModuleType
-
 import unittest.mock
 
 from . import scaffold

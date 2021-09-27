@@ -20,9 +20,9 @@ import os
 import os.path
 import signal
 import sys
+import unittest.mock
 
 import lockfile
-import unittest.mock
 
 from . import scaffold
 from .test_daemon import (

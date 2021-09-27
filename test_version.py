@@ -20,11 +20,11 @@ import os
 import os.path
 import tempfile
 import textwrap
+import unittest.mock
 
 import docutils
 import docutils.nodes
 import docutils.writers
-import unittest.mock
 import setuptools
 import setuptools.command
 import testscenarios

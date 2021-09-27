@@ -23,6 +23,7 @@ Removed:
   * unicode_literals
   * module-level metaclass `type`
   * unification of str with unicode type
+  * renamed standard library modules
 
   All these are default behaviour in Python 3 and need no special
   declaration.

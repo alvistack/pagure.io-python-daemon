@@ -20,9 +20,9 @@ import io
 import itertools
 import os
 import tempfile
+import unittest.mock
 
 import lockfile
-import unittest.mock
 
 from . import scaffold
 
