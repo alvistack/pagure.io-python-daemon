@@ -23,14 +23,6 @@ from .daemon import (
 )
 
 
-try:
-    # Python 3 standard library.
-    ProcessLookupError
-except NameError:
-    # No such class in Python 2.
-    ProcessLookupError = NotImplemented
-
-
 warnings.warn(
         "The ‘runner’ module is not a supported API for this library.",
         DeprecationWarning)
@@ -316,11 +308,6 @@ def is_pidfile_stale(pidfile):
         except ProcessLookupError:
             # The specified PID does not exist.
             result = True
-        except OSError as exc:
-            if exc.errno == errno.ESRCH:
-                # Under Python 2, process lookup error is an OSError.
-                # The specified PID does not exist.
-                result = True
 
     return result
 

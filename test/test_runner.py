@@ -421,13 +421,6 @@ class DaemonRunner_parse_args_TestCase(DaemonRunner_BaseTestCase):
             self.assertEqual(expected_action, instance.action)
 
 
-try:
-    ProcessLookupError
-except NameError:
-    # Python 2 uses OSError.
-    ProcessLookupError = functools.partial(OSError, errno.ESRCH)
-
-
 class DaemonRunner_do_action_TestCase(DaemonRunner_BaseTestCase):
     """ Test cases for DaemonRunner.do_action method. """
 
