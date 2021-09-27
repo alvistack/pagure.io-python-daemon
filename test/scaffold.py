@@ -39,14 +39,8 @@ def get_function_signature(func):
         * 'var_kw_args': The name bound to remaining keyword arguments.
 
         """
-    try:
-        # Python 3 function attributes.
-        func_code = func.__code__
-        func_defaults = func.__defaults__
-    except AttributeError:
-        # Python 2 function attributes.
-        func_code = func.func_code
-        func_defaults = func.func_defaults
+    func_code = func.__code__
+    func_defaults = func.__defaults__
 
     arg_count = func_code.co_argcount
     arg_names = func_code.co_varnames[:arg_count]
