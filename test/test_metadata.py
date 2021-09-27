@@ -39,7 +39,7 @@ class HasAttribute(testtools.matchers.Matcher):
     def match(self, instance):
         """ Assert the object `instance` has an attribute named `name`. """
         result = None
-        if not testtools.helpers.safe_hasattr(instance, self.attribute_name):
+        if not hasattr(instance, self.attribute_name):
             result = AttributeNotFoundMismatch(instance, self.attribute_name)
         return result
 
