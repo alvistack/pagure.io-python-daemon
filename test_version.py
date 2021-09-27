@@ -9,8 +9,6 @@
 
 """ Unit test for ‘version’ packaging module. """
 
-from __future__ import (absolute_import, unicode_literals)
-
 import collections
 import distutils.cmd
 import distutils.dist

@@ -10,8 +10,6 @@
 """ Scaffolding for unit test modules.
     """
 
-from __future__ import (absolute_import, unicode_literals)
-
 from copy import deepcopy
 import doctest
 import functools

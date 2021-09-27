@@ -10,8 +10,6 @@
 """ Unit test suite for ‘daemon’ package.
     """
 
-from __future__ import (absolute_import, unicode_literals)
-
 
 # Copyright © 2008–2021 Ben Finney <ben+python@benfinney.id.au>
 #

@@ -10,8 +10,6 @@
 """ Unit test for ‘runner’ module.
     """
 
-from __future__ import (absolute_import, unicode_literals)
-
 try:
     # Python 3 standard library.
     import builtins

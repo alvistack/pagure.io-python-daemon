@@ -14,9 +14,15 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Changes:
+Removed:
 
-* None.
+* Drop backward-compatible helpers that provided Python 2 support.
+
+  * absolute_import
+  * unicode_literals
+
+  All these are default behaviour in Python 3 and need no special
+  declaration.
 
 
 Version 2.3.0
