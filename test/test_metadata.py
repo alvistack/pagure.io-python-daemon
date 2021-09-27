@@ -266,7 +266,8 @@ def fake_func_get_distribution(
     if (fake_distribution is None):
         fake_resources = {}
         if hasattr(testcase, 'test_version_info'):
-            fake_resources['version_info_filename'] = testcase.test_version_info
+            fake_resources['version_info_filename'] = (
+                testcase.test_version_info)
         fake_distribution = make_mock_distribution(
                 name=name,
                 metadata_resources=fake_resources)

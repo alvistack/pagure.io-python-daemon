@@ -397,10 +397,14 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                         unittest.mock.ANY,
                         unittest.mock.ANY),
                 unittest.mock.call.detach_process_context(),
-                unittest.mock.call.DaemonContext._make_signal_handler_map(),
+                getattr(
+                    unittest.mock.call.DaemonContext,
+                    '_make_signal_handler_map')(),
                 unittest.mock.call.set_signal_handlers(
                         unittest.mock.ANY),
-                unittest.mock.call.DaemonContext._get_exclude_file_descriptors(),
+                getattr(
+                    unittest.mock.call.DaemonContext,
+                    '_get_exclude_file_descriptors')(),
                 unittest.mock.call.close_all_open_files(
                         exclude=unittest.mock.ANY),
                 unittest.mock.call.redirect_stream(
