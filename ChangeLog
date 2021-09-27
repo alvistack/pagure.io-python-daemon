@@ -24,9 +24,10 @@ Removed:
   * module-level metaclass `type`
   * unification of str with unicode type
   * renamed standard library modules
+  * raise exception from context exception
 
   All these are default behaviour in Python 3 and need no special
-  declaration.
+  handling.
 
 
 Version 2.3.0

@@ -21,14 +21,6 @@ import sys
 class DaemonError(Exception):
     """ Base exception class for errors from this module. """
 
-    def __init__(self, *args, **kwargs):
-        self._chain_from_context()
-
-        super().__init__(*args, **kwargs)
-
-    def _chain_from_context(self):
-        _chain_exception_from_existing_exception_context(self, as_cause=True)
-
 
 class DaemonOSEnvironmentError(DaemonError, OSError):
     """ Exception raised when daemon OS environment setup receives error. """
@@ -565,7 +557,7 @@ def change_working_directory(directory):
     except Exception as exc:
         error = DaemonOSEnvironmentError(
                 "Unable to change working directory ({exc})".format(exc=exc))
-        raise error
+        raise error from exc
 
 
 def change_root_directory(directory):
@@ -585,7 +577,7 @@ def change_root_directory(directory):
     except Exception as exc:
         error = DaemonOSEnvironmentError(
                 "Unable to change root directory ({exc})".format(exc=exc))
-        raise error
+        raise error from exc
 
 
 def change_file_creation_mask(mask):
@@ -600,7 +592,7 @@ def change_file_creation_mask(mask):
     except Exception as exc:
         error = DaemonOSEnvironmentError(
                 "Unable to change file creation mask ({exc})".format(exc=exc))
-        raise error
+        raise error from exc
 
 
 def get_username_for_uid(uid):
@@ -648,7 +640,7 @@ def change_process_owner(uid, gid, initgroups=False):
     except Exception as exc:
         error = DaemonOSEnvironmentError(
                 "Unable to change process owner ({exc})".format(exc=exc))
-        raise error
+        raise error from exc
 
 
 def prevent_core_dump():
@@ -670,7 +662,7 @@ def prevent_core_dump():
         error = DaemonOSEnvironmentError(
                 "System does not support RLIMIT_CORE resource limit"
                 " ({exc})".format(exc=exc))
-        raise error
+        raise error from exc
 
     # Set hard and soft limits to zero, i.e. no core dump at all.
     core_limit = (0, 0)
@@ -708,7 +700,7 @@ def detach_process_context():
             error = DaemonProcessDetachError(
                     "{message}: [{exc.errno:d}] {exc.strerror}".format(
                         message=error_message, exc=exc))
-            raise error
+            raise error from exc
 
     fork_then_exit_parent(error_message="Failed first fork")
     os.setsid()
@@ -828,7 +820,7 @@ def close_file_descriptor_if_open(fd):
             error = DaemonOSEnvironmentError(
                     "Failed to close file descriptor {fd:d} ({exc})".format(
                         fd=fd, exc=exc))
-            raise error
+            raise error from exc
 
 
 MAXFD = 2048

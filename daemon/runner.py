@@ -17,10 +17,7 @@ import warnings
 import lockfile
 
 from . import pidfile
-from .daemon import (
-        _chain_exception_from_existing_exception_context,
-        DaemonContext,
-)
+from .daemon import DaemonContext
 
 
 warnings.warn(
@@ -31,21 +28,9 @@ warnings.warn(
 class DaemonRunnerError(Exception):
     """ Abstract base class for errors from DaemonRunner. """
 
-    def __init__(self, *args, **kwargs):
-        self._chain_from_context()
-
-        super().__init__(*args, **kwargs)
-
-    def _chain_from_context(self):
-        _chain_exception_from_existing_exception_context(self, as_cause=True)
-
 
 class DaemonRunnerInvalidActionError(DaemonRunnerError, ValueError):
     """ Raised when specified action for DaemonRunner is invalid. """
-
-    def _chain_from_context(self):
-        # This exception is normally not caused by another.
-        _chain_exception_from_existing_exception_context(self, as_cause=False)
 
 
 class DaemonRunnerStartFailureError(DaemonRunnerError, RuntimeError):
@@ -173,11 +158,11 @@ class DaemonRunner:
 
         try:
             self.daemon_context.open()
-        except lockfile.AlreadyLocked:
+        except lockfile.AlreadyLocked as exc:
             error = DaemonRunnerStartFailureError(
                     "PID file {pidfile.path!r} already locked".format(
                         pidfile=self.pidfile))
-            raise error
+            raise error from exc
 
         pid = os.getpid()
         message = self.start_message.format(pid=pid)
@@ -200,7 +185,7 @@ class DaemonRunner:
             error = DaemonRunnerStopFailureError(
                     "Failed to terminate {pid:d}: {exc}".format(
                         pid=pid, exc=exc))
-            raise error
+            raise error from exc
 
     def _stop(self):
         """ Exit the daemon process specified in the current PID file.
