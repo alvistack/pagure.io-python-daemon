@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Unit test for ‘pidfile’ module.
-    """
+""" Unit test for ‘pidfile’ module. """
 
 import builtins
 import errno
@@ -51,7 +50,6 @@ def make_pidlockfile_scenarios():
 
         The collection is a mapping from scenario name to a dictionary of
         scenario attributes.
-
         """
 
     fake_current_pid = 235
@@ -137,7 +135,6 @@ def setup_pidfile_fixtures(testcase):
 
         Decorate the `testcase` with attributes to be fixtures for tests
         involving `PIDLockFile` instances.
-
         """
     scenarios = make_pidlockfile_scenarios()
     testcase.pidlockfile_scenarios = scenarios
@@ -275,7 +272,6 @@ def make_lockfile_method_fakes(scenario):
             fake function.
 
         Each fake function behaves appropriately for the specified `scenario`.
-
         """
 
     def fake_func_read_pid():
@@ -324,7 +320,6 @@ def apply_lockfile_method_mocks(mock_lockfile, testcase, scenario):
         Mock the `LockFile` methods of `mock_lockfile`, by applying fake
         methods customised for `scenario`. The mock is does by a patch
         within the context of `testcase`.
-
         """
     fake_methods = dict(
             (func_name, fake_func)
@@ -348,7 +343,6 @@ def setup_pidlockfile_fixtures(testcase, scenario_name=None):
 
         Decorate the `testcase` with attributes that are fixtures for test
         cases involving `PIDLockFile` instances.`
-
         """
 
     setup_pidfile_fixtures(testcase)

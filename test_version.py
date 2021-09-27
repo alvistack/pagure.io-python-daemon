@@ -44,7 +44,6 @@ def make_test_classes_for_ensure_class_bases_begin_with():
     """ Make test classes for use with ‘ensure_class_bases_begin_with’.
 
         :return: Mapping {`name`: `type`} of the custom types created.
-
         """
 
     class quux_metaclass(type):
@@ -148,7 +147,6 @@ class ensure_class_bases_begin_with_AlreadyHasBase_TestCase(
 
         These test cases test the conditions where the class's base is
         already the specified base class.
-
         """
 
     test_classes = make_test_classes_for_ensure_class_bases_begin_with()

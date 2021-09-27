@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Daemon process behaviour.
-    """
+""" Daemon process behaviour. """
 
 import atexit
 import errno
@@ -207,7 +206,6 @@ class DaemonContext:
 
             If ``None``, the corresponding system stream is re-bound to the
             file named by `os.devnull`.
-
         """
 
     def __init__(
@@ -327,7 +325,6 @@ class DaemonContext:
 
             When the function returns, the running program is a daemon
             process.
-
             """
         if self.is_open:
             return
@@ -383,7 +380,6 @@ class DaemonContext:
 
             * Mark this instance as closed (for the purpose of future `open`
               and `close` calls).
-
             """
         if not self.is_open:
             return
@@ -411,7 +407,6 @@ class DaemonContext:
             following step:
 
             * Raise a ``SystemExit`` exception explaining the signal.
-
             """
         exception = SystemExit(
                 "Terminating on signal {signal_number!r}".format(
@@ -464,7 +459,6 @@ class DaemonContext:
             If `target` is ``None``, return ``signal.SIG_IGN``. If `target`
             is a text string, return the attribute of this instance named
             by that string. Otherwise, return `target` itself.
-
             """
         if target is None:
             result = signal.SIG_IGN
@@ -484,7 +478,6 @@ class DaemonContext:
             Construct a map from signal numbers to handlers for this
             context instance, suitable for passing to
             `set_signal_handlers`.
-
             """
         signal_handler_map = dict(
                 (signal_number, self._make_signal_handler(target))
@@ -550,7 +543,6 @@ def change_working_directory(directory):
 
         :param directory: The target directory path.
         :return: ``None``.
-
         """
     try:
         os.chdir(directory)
@@ -569,7 +561,6 @@ def change_root_directory(directory):
         Set the current working directory, then the process root directory,
         to the specified `directory`. Requires appropriate OS privileges
         for this process.
-
         """
     try:
         os.chdir(directory)
@@ -585,7 +576,6 @@ def change_file_creation_mask(mask):
 
         :param mask: The numeric file creation mask to set.
         :return: ``None``.
-
         """
     try:
         os.umask(mask)
@@ -623,7 +613,6 @@ def change_process_owner(uid, gid, initgroups=False):
         All these operations require appropriate OS privileges. If
         permission is denied, a ``DaemonOSEnvironmentError`` is
         raised.
-
         """
     try:
         username = get_username_for_uid(uid)
@@ -650,7 +639,6 @@ def prevent_core_dump():
 
         Set the soft and hard limits for core dump size to zero. On Unix,
         this entirely prevents the process from creating core dump.
-
         """
     core_resource = resource.RLIMIT_CORE
 
@@ -680,7 +668,6 @@ def detach_process_context():
         Reference: “Advanced Programming in the Unix Environment”,
         section 13.3, by W. Richard Stevens, published 1993 by
         Addison-Wesley.
-
         """
 
     def fork_then_exit_parent(error_message):
@@ -690,7 +677,6 @@ def detach_process_context():
                 detach failure.
             :return: ``None``.
             :raise DaemonProcessDetachError: If the fork fails.
-
             """
         try:
             pid = os.fork()
@@ -714,7 +700,6 @@ def is_process_started_by_init():
             ``False``.
 
         The `init` process is the one with process ID of 1.
-
         """
     result = False
 
@@ -734,7 +719,6 @@ def is_socket(fd):
 
         Query the socket type of `fd`. If there is no error, the file is a
         socket.
-
         """
     result = False
 
@@ -766,7 +750,6 @@ def is_process_started_by_superserver():
         attaches it to the standard streams of the child process. If
         that is the case for this process, return ``True``, otherwise
         ``False``.
-
         """
     result = False
 
@@ -791,7 +774,6 @@ def is_detach_process_context_required():
 
         If any of the above are true, the process is deemed to be already
         detached.
-
         """
     result = True
     if is_process_started_by_init() or is_process_started_by_superserver():
@@ -808,7 +790,6 @@ def close_file_descriptor_if_open(fd):
 
         Close the file descriptor `fd`, suppressing an error in the
         case the file was not open.
-
         """
     try:
         os.close(fd)
@@ -835,7 +816,6 @@ def get_maximum_file_descriptors():
         The maximum is the process hard resource limit of maximum number of
         open file descriptors. If the limit is “infinity”, a default value
         of ``MAXFD`` is returned.
-
         """
     (__, hard_limit) = resource.getrlimit(resource.RLIMIT_NOFILE)
 
@@ -955,7 +935,6 @@ def redirect_stream(system_stream, target_stream):
 
         If `target_stream` is ``None``, defaults to opening the
         operating system's null device and using its file descriptor.
-
         """
     if target_stream is None:
         target_fd = os.open(os.devnull, os.O_RDWR)
@@ -971,7 +950,6 @@ def make_default_signal_map():
 
         The signals available differ by system. The map will not contain
         any signals not defined on the running system.
-
         """
     name_map = {
             'SIGTSTP': None,
@@ -996,7 +974,6 @@ def set_signal_handlers(signal_handler_map):
 
         See the `signal` module for details on signal numbers and signal
         handlers.
-
         """
     for (signal_number, handler) in signal_handler_map.items():
         signal.signal(signal_number, handler)
@@ -1010,7 +987,6 @@ def register_atexit_function(func):
 
         The function `func` is registered for a call with no arguments
         at program exit.
-
         """
     atexit.register(func)
 
@@ -1028,7 +1004,6 @@ def _chain_exception_from_existing_exception_context(exc, as_cause=False):
 
         Python 2 does not have that syntax, so this function decorates
         the exception with values from the current exception context.
-
         """
     (existing_exc_type, existing_exc, existing_traceback) = sys.exc_info()
     if as_cause:

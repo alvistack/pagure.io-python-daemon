@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Unit test for ‘daemon’ module.
-    """
+""" Unit test for ‘daemon’ module. """
 
 import collections
 import errno
@@ -61,7 +60,6 @@ def setup_daemon_context_fixtures(testcase):
 
         Decorate the `testcase` with fixtures for tests involving
         `DaemonContext`.
-
         """
     setup_streams_fixtures(testcase)
 
@@ -1055,7 +1053,6 @@ class change_process_owner_TestCase(scaffold.TestCase):
             Since the process requires appropriate privilege to use
             either of `setuid` or `setgid`, changing the UID must be
             done last.
-
             """
         args = self.test_args
         args['initgroups'] = True
@@ -1079,7 +1076,6 @@ class change_process_owner_TestCase(scaffold.TestCase):
             Since the process requires appropriate privilege to use
             either of `setuid` or `setgid`, changing the UID must be
             done last.
-
             """
         args = self.test_args
         args['initgroups'] = False
@@ -1382,7 +1378,6 @@ class maxfd_TestCase(scaffold.TestCase):
             file descriptors, we still need a finite number in order
             to close “all” of them. Ensure this is reasonably high
             to catch most use cases.
-
             """
         expected_minimum = 2048
         maxfd = daemon.daemon.MAXFD
@@ -2100,7 +2095,6 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
             signals which exist on the running system. Therefore the
             default map should not contain any signals which are not
             defined in the `signal` module.
-
             """
         del(self.default_signal_map[self.fake_signal_module.SIGTTOU])
         del(self.fake_signal_module.SIGTTOU)

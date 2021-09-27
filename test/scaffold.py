@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Scaffolding for unit test modules.
-    """
+""" Scaffolding for unit test modules. """
 
 from copy import deepcopy
 import doctest
@@ -37,7 +36,6 @@ def get_function_signature(func):
         * 'arg_defaults': A sequence of the default values for the arguments.
         * 'var_args': The name bound to remaining positional arguments.
         * 'var_kw_args': The name bound to remaining keyword arguments.
-
         """
     func_code = func.__code__
     func_defaults = func.__defaults__
@@ -80,7 +78,6 @@ def format_function_signature(func):
         The signature is rendered as text; for example::
 
             foo(spam, eggs, ham=True, beans=None, *args, **kwargs)
-
         """
     signature = get_function_signature(func)
 
@@ -122,7 +119,6 @@ class TestCase(testtools.testcase.TestCase):
             a ``doctest.OutputChecker`` instance. This is not an equality
             check, but a pattern match according to the ``OutputChecker``
             rules.
-
             """
         checker = doctest.OutputChecker()
         want = textwrap.dedent(want)
@@ -158,7 +154,6 @@ class TestCase(testtools.testcase.TestCase):
 
             Fail the test if the function ``function`` is not at any of the
             levels in the traceback object ``traceback``.
-
             """
         func_in_traceback = False
         expected_code = function.func_code
@@ -207,7 +202,6 @@ class TestCase(testtools.testcase.TestCase):
             * collector for arbitrary positional arguments,
 
             * collector for arbitrary keyword arguments.
-
             """
         first_signature = get_function_signature(first)
         second_signature = get_function_signature(second)
@@ -272,7 +266,6 @@ def make_exception_scenarios(scenarios):
             :key types:
                 Sequence of types that should be superclasses of each
                 instance of the exception type.
-
         """
     updated_scenarios = deepcopy(scenarios)
     for (name, scenario) in updated_scenarios:

@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Unit test for ‘_metadata’ private module.
-    """
+""" Unit test for ‘_metadata’ private module. """
 
 import collections
 import errno

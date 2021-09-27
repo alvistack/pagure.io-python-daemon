@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Unit test for ‘runner’ module.
-    """
+""" Unit test for ‘runner’ module. """
 
 import builtins
 import errno
@@ -70,7 +69,6 @@ def make_runner_scenarios():
 
         The collection is a mapping from scenario name to a dictionary of
         scenario attributes.
-
         """
 
     pidlockfile_scenarios = make_pidlockfile_scenarios()
@@ -104,7 +102,6 @@ def set_runner_scenario(testcase, scenario_name):
 
         Set the `DaemonRunner` test scenario name and decorate the
         `testcase` with the corresponding scenario fixtures.
-
         """
     scenarios = testcase.runner_scenarios
     testcase.scenario = scenarios[scenario_name]
@@ -121,7 +118,6 @@ def setup_runner_fixtures(testcase):
 
         Decorate the `testcase` with attributes to be fixtures for tests
         involving `DaemonRunner` instances.
-
         """
     setup_pidfile_fixtures(testcase)
     setup_streams_fixtures(testcase)

@@ -28,7 +28,6 @@
     Customisation of the steps to become a daemon is available by
     setting options on the `DaemonContext` instance; see the
     documentation for that class for each option.
-
     """
 
 from .daemon import DaemonContext

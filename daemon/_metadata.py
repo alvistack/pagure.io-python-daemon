@@ -100,7 +100,6 @@ def make_year_range(begin_year, end_date=None):
 
         If the `end_date` is not a valid ISO-8601 date string, the
         range has ``None`` for the end year.
-
         """
     begin_year = int(begin_year)
 

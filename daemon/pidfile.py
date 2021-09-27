@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Lockfile behaviour implemented via Unix PID files.
-    """
+""" Lockfile behaviour implemented via Unix PID files. """
 
 from lockfile.pidlockfile import PIDLockFile
 
@@ -20,7 +19,6 @@ class TimeoutPIDLockFile(PIDLockFile, object):
         * The `acquire_timeout` parameter to the initialiser will be
           used as the default `timeout` parameter for the `acquire`
           method.
-
         """
 
     def __init__(self, path, acquire_timeout=None, *args, **kwargs):
@@ -30,7 +28,6 @@ class TimeoutPIDLockFile(PIDLockFile, object):
             :param acquire_timeout: Value to use by default for the
                 `acquire` call.
             :return: ``None``.
-
             """
         self.acquire_timeout = acquire_timeout
         super().__init__(path, *args, **kwargs)
@@ -46,7 +43,6 @@ class TimeoutPIDLockFile(PIDLockFile, object):
             initialisation with the `acquire_timeout` parameter. It is
             passed to `PIDLockFile.acquire`; see that method for
             details.
-
             """
         if timeout is None:
             timeout = self.acquire_timeout

@@ -2,7 +2,7 @@ Developer's guide
 #################
 
 :Author: Ben Finney <ben+python@benfinney.id.au>
-:Updated: 2016-10-21
+:Updated: 2021-09-27
 
 
 VCS repository
@@ -133,7 +133,6 @@ Documenting code
             The frobnication is done by the Dietzel-Venkman algorithm,
             and optimises for the case where `spam` is freebled and
             agglutinative.
-
             """
         spagnify(spam)
         # …

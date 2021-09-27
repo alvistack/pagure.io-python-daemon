@@ -19,7 +19,6 @@
 
     * Docutils <http://docutils.sourceforge.net/>
     * JSON <https://docs.python.org/3/reference/json.html>
-
     """
 
 import collections
@@ -58,7 +57,6 @@ def ensure_class_bases_begin_with(namespace, class_name, base_class):
 
         Call this function after ensuring `base_class` is available,
         before using the class named by `class_name`.
-
         """
     existing_class = namespace[class_name]
     assert isinstance(existing_class, type)
@@ -119,7 +117,6 @@ def parse_person_field(value):
 
         If the `value` does not match a standard person with email
         address, the `email` item is ``None``.
-
         """
     result = ParsedPerson(None, None)
 
@@ -172,7 +169,6 @@ class ChangeLogEntry:
             :param value: The prospective `release_date` value.
             :return: ``None`` if the value is valid.
             :raises ValueError: If the value is invalid.
-
             """
         if value in ["UNKNOWN", "FUTURE"]:
             # A valid non-date value.
@@ -188,7 +184,6 @@ class ChangeLogEntry:
             :param vaue: The prospective `version` value.
             :return: ``None`` if the value is valid.
             :raises ValueError: If the value is invalid.
-
             """
         if value in ["UNKNOWN", "NEXT"]:
             # A valid non-version value.
@@ -207,7 +202,6 @@ class ChangeLogEntry:
             :param value: The prospective `maintainer` value.
             :return: ``None`` if the value is valid.
             :raises ValueError: If the value is invalid.
-
             """
         valid = False
 
@@ -437,7 +431,6 @@ def changelog_to_version_info_collection(infile):
 
         :param infile: A file-like object containing the changelog.
         :return: The serialised JSON data of the version info collection.
-
         """
 
     # Docutils is not available when Setuptools needs this module, so
@@ -481,7 +474,6 @@ def generate_version_info_from_changelog(infile_path):
             file cannot be read.
 
         The document is explicitly opened as UTF-8 encoded text.
-
         """
     version_info = collections.OrderedDict()
 
@@ -507,7 +499,6 @@ def get_latest_version(versions):
         :param versions: A collection of mappings for changelog entries.
         :return: An ordered mapping of fields for the latest version,
             if `versions` is non-empty; otherwise, an empty mapping.
-
         """
     version_info = collections.OrderedDict()
 
@@ -527,7 +518,6 @@ def serialise_version_info_from_mapping(version_info):
 
         :param version_info: Mapping of version info items.
         :return: The version info serialised to JSON.
-
         """
     content = json.dumps(version_info, indent=4)
 
@@ -544,7 +534,6 @@ def get_changelog_path(distribution, filename=changelog_filename):
         :param filename: The base filename of the changelog document.
         :return: Filesystem path of the changelog document, or ``None``
             if not discoverable.
-
         """
     build_py_command = distutils.command.build_py.build_py(distribution)
     build_py_command.finalize_options()
@@ -634,7 +623,6 @@ class ChangelogAwareDistribution(distutils.dist.Distribution, object):
         * version
         * maintainer
         * maintainer_email
-
         """
 
     __metaclass__ = type

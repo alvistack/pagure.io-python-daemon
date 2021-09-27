@@ -5,8 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Daemon runner library.
-    """
+""" Daemon runner library. """
 
 import errno
 import os
@@ -49,7 +48,6 @@ class DaemonRunner:
         * 'start': Become a daemon and call `app.run()`.
         * 'stop': Exit the daemon process specified in the PID file.
         * 'restart': Stop, then start.
-
         """
 
     start_message = "started with pid {pid:d}"
@@ -75,7 +73,6 @@ class DaemonRunner:
 
             * `run`: Callable that will be invoked when the daemon is
               started.
-
             """
         self.parse_args()
         self.app = app
@@ -109,7 +106,6 @@ class DaemonRunner:
             :param argv: The command-line arguments used to invoke the
                 program, as a sequence of strings.
             :return: ``None``.
-
             """
         progname = os.path.basename(argv[0])
         usage_exit_code = 2
@@ -132,7 +128,6 @@ class DaemonRunner:
 
             If the parser fails to parse the arguments, emit a usage
             message and exit the program.
-
             """
         if argv is None:
             argv = sys.argv
@@ -151,7 +146,6 @@ class DaemonRunner:
             :return: ``None``.
             :raises DaemonRunnerStartFailureError: If the PID file cannot
                 be locked by this process.
-
             """
         if is_pidfile_stale(self.pidfile):
             self.pidfile.break_lock()
@@ -176,7 +170,6 @@ class DaemonRunner:
             :return: ``None``.
             :raises DaemonRunnerStopFailureError: If terminating the daemon
                 fails with an OS error.
-
             """
         pid = self.pidfile.read_pid()
         try:
@@ -193,7 +186,6 @@ class DaemonRunner:
             :return: ``None``.
             :raises DaemonRunnerStopFailureError: If the PID file is not
                 already locked.
-
             """
         if not self.pidfile.is_locked():
             error = DaemonRunnerStopFailureError(
@@ -207,8 +199,7 @@ class DaemonRunner:
             self._terminate_daemon_process()
 
     def _restart(self):
-        """ Stop, then start.
-            """
+        """ Stop, then start. """
         self._stop()
         self._start()
 
@@ -228,7 +219,6 @@ class DaemonRunner:
 
             The action is specified by the `action` attribute, which is set
             during `parse_args`.
-
             """
         try:
             func = self.action_funcs[self.action]
@@ -246,7 +236,6 @@ class DaemonRunner:
 
             The action is specified by the `action` attribute, which is set
             during `parse_args`.
-
             """
         func = self._get_action_func()
         func(self)
@@ -282,7 +271,6 @@ def is_pidfile_stale(pidfile):
 
         The PID file is “stale” if its contents are valid but do not
         match the PID of a currently-running process.
-
         """
     result = False
 
