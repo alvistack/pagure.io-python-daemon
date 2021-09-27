@@ -4,12 +4,14 @@
 
 --requirement base.txt
 
-# Python code-analysis tools.
-pycodestyle == 2.6.0
+# Static code checker for Python style recommendations.
+# Documentation: <URL:https://pycodestyle.pycqa.org/>.
+pycodestyle == 2.7.0
 
 
 # Local variables:
 # coding: utf-8
+# mode: pip-requirements
 # mode: conf
 # End:
 # vim: fileencoding=utf-8 filetype=conf :

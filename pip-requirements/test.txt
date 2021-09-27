@@ -5,10 +5,11 @@
 --requirement static-analysis.txt
 
 # Data-driven test scenarios for ‘unittest’.
+# Documentation: <URL:https://pypi.org/project/testscenarios/>.
 testscenarios == 0.5.0
 
 # Test automation tool using VirtualEnv.
-tox == 3.22.0
+tox == 3.24.4
 
 
 # Local variables:
