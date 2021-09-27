@@ -554,7 +554,10 @@ class DaemonRunner_do_action_stop_TestCase(DaemonRunner_BaseTestCase):
         instance = self.test_instance
         test_pid = self.scenario['pidlockfile_scenario']['pidfile_pid']
         test_error = OSError(errno.EPERM, "Nice try")
-        os.kill.side_effect = test_error
+        def fake_os_kill(pid, sig):
+            if (sig == signal.SIGTERM):
+                raise test_error
+        os.kill.side_effect = fake_os_kill
         expected_error = daemon.runner.DaemonRunnerStopFailureError
         expected_message_content = str(test_pid)
         exc = self.assertRaises(
