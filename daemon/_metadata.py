@@ -12,8 +12,6 @@ import json
 
 import pkg_resources
 
-__metaclass__ = type
-
 
 distribution_name = "python-daemon"
 version_info_filename = "version_info.json"

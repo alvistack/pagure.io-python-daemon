@@ -21,6 +21,7 @@ Removed:
   * declaration of source encoding ‘utf-8’
   * absolute_import
   * unicode_literals
+  * module-level metaclass `type`
 
   All these are default behaviour in Python 3 and need no special
   declaration.

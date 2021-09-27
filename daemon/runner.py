@@ -32,8 +32,6 @@ except NameError:
     # No such class in Python 2.
     ProcessLookupError = NotImplemented
 
-__metaclass__ = type
-
 
 warnings.warn(
         "The ‘runner’ module is not a supported API for this library.",

@@ -25,8 +25,6 @@ except NameError:
     basestring = str
     unicode = str
 
-__metaclass__ = type
-
 
 class DaemonError(Exception):
     """ Base exception class for errors from this module. """
