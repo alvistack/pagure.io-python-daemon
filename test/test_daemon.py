@@ -24,7 +24,6 @@ from types import ModuleType
 import unittest.mock
 
 from . import scaffold
-from .scaffold import unicode
 from .test_pidfile import (
         FakeFileDescriptorStringIO,
         setup_pidfile_fixtures,
@@ -668,7 +667,7 @@ class DaemonContext_terminate_TestCase(DaemonContext_BaseTestCase):
         exc = self.assertRaises(
                 expected_exception,
                 instance.terminate, *args)
-        self.assertIn(unicode(signal_number), unicode(exc))
+        self.assertIn(str(signal_number), str(exc))
 
 
 class DaemonContext_get_exclude_file_descriptors_TestCase(
@@ -792,10 +791,10 @@ class DaemonContext_make_signal_handler_TestCase(DaemonContext_BaseTestCase):
         result = instance._make_signal_handler(target)
         self.assertEqual(expected_result, result)
 
-    def test_returns_method_for_unicode_name(self):
-        """ Should return DaemonContext method for name of type ‘unicode’. """
+    def test_returns_method_for_str_name(self):
+        """ Should return DaemonContext method for name of type ‘str’. """
         instance = self.test_instance
-        target = unicode('terminate')
+        target = str('terminate')
         expected_result = instance.terminate
         result = instance._make_signal_handler(target)
         self.assertEqual(expected_result, result)
@@ -910,7 +909,7 @@ class change_working_directory_TestCase(scaffold.TestCase):
         exc = self.assertRaises(
                 expected_error,
                 daemon.daemon.change_working_directory, **args)
-        self.assertIn(unicode(test_error), unicode(exc))
+        self.assertIn(str(test_error), str(exc))
 
 
 @unittest.mock.patch.object(os, "chroot")
@@ -982,7 +981,7 @@ class change_root_directory_TestCase(scaffold.TestCase):
         exc = self.assertRaises(
                 expected_error,
                 daemon.daemon.change_root_directory, **args)
-        self.assertIn(unicode(test_error), unicode(exc))
+        self.assertIn(str(test_error), str(exc))
 
 
 @unittest.mock.patch.object(os, "umask")
@@ -1029,7 +1028,7 @@ class change_file_creation_mask_TestCase(scaffold.TestCase):
         exc = self.assertRaises(
                 expected_error,
                 daemon.daemon.change_file_creation_mask, **args)
-        self.assertIn(unicode(test_error), unicode(exc))
+        self.assertIn(str(test_error), str(exc))
 
 
 @unittest.mock.patch.object(os, "initgroups")
@@ -1195,7 +1194,7 @@ class change_process_owner_TestCase(scaffold.TestCase):
         exc = self.assertRaises(
                 expected_error,
                 daemon.daemon.change_process_owner, **args)
-        self.assertIn(unicode(test_error), unicode(exc))
+        self.assertIn(str(test_error), str(exc))
 
 
 RLimitResult = collections.namedtuple('RLimitResult', ['soft', 'hard'])

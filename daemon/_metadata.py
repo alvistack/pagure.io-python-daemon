@@ -81,14 +81,12 @@ class YearRange:
         self.begin = begin
         self.end = end
 
-    def __unicode__(self):
+    def __str__(self):
         text = "{range.begin:04d}".format(range=self)
         if self.end is not None:
             if self.end > self.begin:
                 text = "{range.begin:04d}–{range.end:04d}".format(range=self)
         return text
-
-    __str__ = __unicode__
 
 
 def make_year_range(begin_year, end_date=None):

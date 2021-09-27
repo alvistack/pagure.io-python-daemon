@@ -20,8 +20,6 @@ from . import pidfile
 from .daemon import (
         _chain_exception_from_existing_exception_context,
         DaemonContext,
-        basestring,
-        unicode,
 )
 
 
@@ -166,7 +164,7 @@ class DaemonRunner:
         if len(argv) < min_args:
             self._usage_exit(argv)
 
-        self.action = unicode(argv[1])
+        self.action = str(argv[1])
         if self.action not in self.action_funcs:
             self._usage_exit(argv)
 
@@ -287,7 +285,7 @@ def emit_message(message, stream=None):
 
 def make_pidlockfile(path, acquire_timeout):
     """ Make a PIDLockFile instance with the given filesystem path. """
-    if not isinstance(path, basestring):
+    if not isinstance(path, str):
         error = ValueError("Not a filesystem path: {path!r}".format(
                 path=path))
         raise error

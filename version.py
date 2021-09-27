@@ -42,15 +42,6 @@ import textwrap
 import setuptools
 import setuptools.command.egg_info
 
-try:
-    # Python 2 has both ‘str’ (bytes) and ‘unicode’ (text).
-    basestring = basestring
-    unicode = unicode
-except NameError:
-    # Python 3 names the Unicode data type ‘str’.
-    basestring = str
-    unicode = str
-
 
 def ensure_class_bases_begin_with(namespace, class_name, base_class):
     """ Ensure the named class's bases start with the base class.
@@ -294,9 +285,9 @@ class VersionInfoTranslator(object):
     bullet_text = "* "
 
     attr_convert_funcs_by_attr_name = {
-            'released': ('release_date', unicode),
-            'version': ('version', unicode),
-            'maintainer': ('maintainer', unicode),
+            'released': ('release_date', str),
+            'version': ('version', str),
+            'maintainer': ('maintainer', str),
             }
 
     def __init__(self, document):

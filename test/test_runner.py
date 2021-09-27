@@ -25,7 +25,6 @@ import lockfile
 import unittest.mock
 
 from . import scaffold
-from .scaffold import unicode
 from .test_daemon import (
         setup_streams_fixtures,
         )
@@ -462,7 +461,7 @@ class DaemonRunner_do_action_start_TestCase(DaemonRunner_BaseTestCase):
         exc = self.assertRaises(
                 expected_error,
                 instance.do_action)
-        self.assertIn(expected_message_content, unicode(exc))
+        self.assertIn(expected_message_content, str(exc))
 
     def test_breaks_lock_if_no_such_process(self):
         """ Should request breaking lock if PID file process not running. """
@@ -532,7 +531,7 @@ class DaemonRunner_do_action_stop_TestCase(DaemonRunner_BaseTestCase):
         exc = self.assertRaises(
                 expected_error,
                 instance.do_action)
-        self.assertIn(expected_message_content, unicode(exc))
+        self.assertIn(expected_message_content, str(exc))
 
     def test_breaks_lock_if_pidfile_stale(self):
         """ Should break lock if PID file is stale. """
@@ -557,11 +556,11 @@ class DaemonRunner_do_action_stop_TestCase(DaemonRunner_BaseTestCase):
         test_error = OSError(errno.EPERM, "Nice try")
         os.kill.side_effect = test_error
         expected_error = daemon.runner.DaemonRunnerStopFailureError
-        expected_message_content = unicode(test_pid)
+        expected_message_content = str(test_pid)
         exc = self.assertRaises(
                 expected_error,
                 instance.do_action)
-        self.assertIn(expected_message_content, unicode(exc))
+        self.assertIn(expected_message_content, str(exc))
 
 
 @unittest.mock.patch.object(daemon.runner.DaemonRunner, "_start")

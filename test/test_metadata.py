@@ -26,7 +26,6 @@ import testtools.helpers
 import testtools.matchers
 
 from . import scaffold
-from .scaffold import unicode
 
 import daemon._metadata as metadata
 
@@ -127,7 +126,7 @@ class YearRange_TestCase(scaffold.TestCaseWithScenarios):
 
     def test_text_representation_as_expected(self):
         """ Text representation should be as expected. """
-        result = unicode(self.test_instance)
+        result = str(self.test_instance)
         self.assertEqual(result, self.expected_text)
 
 

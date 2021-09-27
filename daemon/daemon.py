@@ -16,14 +16,6 @@ import resource
 import signal
 import socket
 import sys
-try:
-    # Python 2 has both ‘str’ (bytes) and ‘unicode’ (text).
-    basestring = basestring
-    unicode = unicode
-except NameError:
-    # Python 3 names the Unicode data type ‘str’.
-    basestring = str
-    unicode = str
 
 
 class DaemonError(Exception):
@@ -484,7 +476,7 @@ class DaemonContext:
             """
         if target is None:
             result = signal.SIG_IGN
-        elif isinstance(target, basestring):
+        elif isinstance(target, str):
             name = target
             result = getattr(self, name)
         else:
