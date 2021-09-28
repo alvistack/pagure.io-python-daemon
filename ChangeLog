@@ -14,6 +14,12 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
+Changed:
+
+* Speed daemon start time by computing candidate file descriptors once.
+
+  Closes: Pagure #40. Thanks to Alex Pyrgiotis for the report.
+
 Removed:
 
 * Drop backward-compatible helpers that provided Python 2 support.
