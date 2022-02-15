@@ -1,6 +1,6 @@
 # .editorconfig
 # EditorConfig settings for this code base.
-# Documentation: <URL:http://editorconfig.org/>.
+# Homepage: <URL:http://editorconfig.org/>.
 
 # Is this the top-most EditorConfig config file in the code base?
 root = true
@@ -11,7 +11,19 @@ root = true
 # Text encoding name.
 charset = utf-8
 
-# Remove trailing whitespace on lines?
+# Indentation style (“tab”, “space”).
+indent_style = space
+
+# How many columns (integer) for each indentation level.
+indent_size = 4
+
+# How many columns (integer) to represent a U+0008 TAB.
+tab_width = 8
+
+# How many characters (integer) before enforcing line wrap.
+max_line_length = 79
+
+# Remove trailing whitespace on each line?
 trim_trailing_whitespace = true
 
 # End-of-line style (“lf”, “cr”, “crlf”).
@@ -23,8 +35,6 @@ insert_final_newline = true
 # Character to use for indentation (“tab” for U+0009, “space” for U+0020).
 indent_style = space
 
-# Number of columns for each indentation level.
-indent_size = 4
 
 [{Makefile,*.mk}]
 indent_style = tab
