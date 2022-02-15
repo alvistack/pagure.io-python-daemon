@@ -10,7 +10,7 @@ requires = ["setuptools", "wheel", "docutils"]
 
 # Local-variables:
 # coding: utf-8
-# mode: conf
 # mode: toml
+# mode: conf
 # End:
 # vim: fileencoding=utf-8 filetype=toml :

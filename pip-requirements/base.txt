@@ -8,6 +8,7 @@ pip
 
 # Local variables:
 # coding: utf-8
+# mode: pip-requirements
 # mode: conf
 # End:
 # vim: fileencoding=utf-8 filetype=conf :
