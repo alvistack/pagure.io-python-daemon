@@ -2162,7 +2162,7 @@ class register_atexit_function_TestCase(scaffold.TestCase):
         mock_func_atexit_register.assert_called_with(func)
 
 
-# Copyright © 2008–2021 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2008–2022 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the
