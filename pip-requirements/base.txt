@@ -6,6 +6,10 @@
 # Documentation: <URL:https://pip.pypa.io/>.
 pip
 
+# Support for pre-built binary Python packages.
+# Documentation: <URL:https://wheel.readthedocs.io/>.
+wheel
+
 
 # Local variables:
 # coding: utf-8
