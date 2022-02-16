@@ -4,6 +4,10 @@
 
 --requirement static-analysis.txt
 
+# Code coverage measurement.
+# Documentation: <URL:https://coverage.readthedocs.io/>.
+coverage == 6.3.1
+
 # Data-driven test scenarios for ‘unittest’.
 # Documentation: <URL:https://pypi.org/project/testscenarios/>.
 testscenarios == 0.5.0
