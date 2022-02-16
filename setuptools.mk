@@ -31,8 +31,18 @@ GENERATED_FILES += $(CURDIR)/.eggs/
 GENERATED_FILES += $(CURDIR)/build/
 GENERATED_FILES += $(CURDIR)/dist/
 
-GENERATED_FILES += $(shell find $(CURDIR) -type f -name '*.pyc')
-GENERATED_FILES += $(shell find $(CURDIR) -type d -name '__pycache__')
+GENERATED_FILES += $(CURDIR)/'.tox'
+GENERATED_FILES += $(CURDIR)/'.eggs'
+GENERATED_FILES += $(shell find $(CURDIR) \
+	-type f -name '*.pyc' \( \
+		-not -path '*/.tox/*' \
+		-not -path '*/.eggs/*' \
+	\) )
+GENERATED_FILES += $(shell find $(CURDIR) \
+	-type d -name '__pycache__' \( \
+		-not -path '*/.tox/*' \
+		-not -path '*/.eggs/*' \
+	\) )
 
 VCS_INVENTORY ?= git ls-files
 
