@@ -6,7 +6,7 @@
 
 # Static code checker for Python style recommendations.
 # Documentation: <URL:https://pycodestyle.pycqa.org/>.
-pycodestyle == 2.7.0
+pycodestyle == 2.8.0
 
 
 # Local variables:
