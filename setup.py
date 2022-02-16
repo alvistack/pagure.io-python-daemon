@@ -17,14 +17,8 @@ from setuptools import (setup, find_packages)
 import version
 
 
-fromlist_expects_type = str
-if sys.version_info < (3, 0):
-    fromlist_expects_type = bytes
-
-
 main_module_name = 'daemon'
-main_module_fromlist = list(map(fromlist_expects_type, [
-        '_metadata']))
+main_module_fromlist = ['_metadata']
 main_module = __import__(
         main_module_name,
         level=0, fromlist=main_module_fromlist)
