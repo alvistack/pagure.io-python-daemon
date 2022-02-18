@@ -17,7 +17,7 @@
 
     Requires:
 
-    * Docutils <http://docutils.sourceforge.net/>
+    * Docutils <https://docutils.sourceforge.io/>
     * JSON <https://docs.python.org/3/reference/json.html>
     """
 

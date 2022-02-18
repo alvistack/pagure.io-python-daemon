@@ -2,7 +2,7 @@
 ##########################################
 
 :Author: Ben Finney <ben+python@benfinney.id.au>
-:Updated: 2015-01-10
+:Updated: 2022-02-18
 
 ..  contents::
 ..
@@ -25,7 +25,7 @@ The ‘python-daemon’ library has a deliberately narrow focus: that of
 being a reference implementation for `PEP 3143`_, “Standard daemon
 process library”.
 
-..  _`PEP 3143`: http://www.python.org/dev/peps/pep-3143
+..  _`PEP 3143`: https://www.python.org/dev/peps/pep-3143/
 
 How can I run a service communicating with a separate daemon process?
 ---------------------------------------------------------------------
@@ -53,7 +53,7 @@ programs interacting. As detailed in PEP 3143:
 A possible starting point for such a “service” model of execution is
 in a `message from 2009-01-30`_ to the ``python-ideas`` forum.
 
-..  _`message from 2009-01-30`: http://mail.python.org/pipermail/python-ideas/2009-January/002606.html
+..  _`message from 2009-01-30`: https://mail.python.org/pipermail/python-ideas/2009-January/002606.html
 
 
 Security
@@ -134,7 +134,7 @@ from closure::
 
     # … continue as a daemon process …
 
-..  _`logging module documentation`: http://docs.python.org/library/logging
+..  _`logging module documentation`: https://docs.python.org/3/library/logging.html
 
 
 ..

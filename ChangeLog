@@ -2,9 +2,9 @@ This document is the `change log`_ for this distribution. It is a
 record of all notable changes in each version released.
 
 Version strings conform to the `Semantic Versioning`_ specification,
-`version 2.0.0 <http://semver.org/spec/v2.0.0.html>`__.
+`version 2.0.0 <https://semver.org/spec/v2.0.0.html>`__.
 
-..  _change log: http://keepachangelog.com/
+..  _change log: https://keepachangelog.com/
 ..  _Semantic Versioning: https://semver.org/
 
 
@@ -745,8 +745,8 @@ Changed:
     This document is written using `reStructuredText`_ markup, and can
     be rendered with `Docutils`_ to other formats.
 
-    ..  _Docutils: http://docutils.sourceforge.net/
-    ..  _reStructuredText: http://docutils.sourceforge.net/rst.html
+    ..  _Docutils: https://docutils.sourceforge.io/
+    ..  _reStructuredText: https://docutils.sourceforge.io/rst.html
 
 ..
     This is free software: you may copy, modify, and/or distribute this work

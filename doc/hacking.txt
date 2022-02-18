@@ -2,7 +2,7 @@ Developer's guide
 #################
 
 :Author: Ben Finney <ben+python@benfinney.id.au>
-:Updated: 2021-09-27
+:Updated: 2022-02-18
 
 
 VCS repository
@@ -239,8 +239,8 @@ project.
     This document is written using `reStructuredText`_ markup, and can
     be rendered with `Docutils`_ to other formats.
 
-    ..  _Docutils: http://docutils.sourceforge.net/
-    ..  _reStructuredText: http://docutils.sourceforge.net/rst.html
+    ..  _Docutils: https://docutils.sourceforge.io/
+    ..  _reStructuredText: https://docutils.sourceforge.io/rst.html
 
 ..
     This is free software: you may copy, modify, and/or distribute this work

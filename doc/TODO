@@ -1,7 +1,7 @@
 TODO for ‘python-daemon’ library
 ################################
 
-:Updated: 2015-11-27
+:Updated: 2022-02-18
 
 =======
 PENDING
@@ -14,7 +14,7 @@ Libraries
 =========
 
 * Evaluate switching to ‘flufl.lock’ library for PID lockfile behaviour
-  <http://pypi.python.org/pypi/flufl.lock>_.
+  <https://pypi.org/project/flufl.lock>_.
 
 * Evaluate switching to ‘Fasteners’ library for PID lockfile behaviour
   <https://pypi.python.org/pypi/fasteners>_.
