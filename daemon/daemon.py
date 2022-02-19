@@ -788,8 +788,7 @@ def is_process_started_by_superserver():
         """
     result = False
 
-    stdin_fd = sys.__stdin__.fileno()
-    if is_socket(stdin_fd):
+    if is_socket_file(sys.__stdin__):
         result = True
 
     return result

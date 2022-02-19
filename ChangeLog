@@ -14,6 +14,12 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
+Bugs Fixed:
+
+* Avoid operations on a closed stream file when detecting a socket.
+
+  Closes: Pagure #64. Thanks to Mark Richman for the report.
+
 Changed:
 
 * Speed daemon start time by computing candidate file descriptors once.

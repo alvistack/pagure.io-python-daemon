@@ -1997,8 +1997,9 @@ class is_process_started_by_superserver_TestCase(scaffold.TestCase):
         """ Set up test fixtures. """
         super().setUp()
 
-        def fake_is_socket(fd):
-            if sys.__stdin__.fileno() == fd:
+        def fake_is_socket_file(file):
+            fd = (file.fileno() if not file.closed else None)
+            if (sys.__stdin__.fileno() == fd):
                 result = self.fake_stdin_is_socket_func()
             else:
                 result = False
@@ -2006,11 +2007,11 @@ class is_process_started_by_superserver_TestCase(scaffold.TestCase):
 
         self.fake_stdin_is_socket_func = (lambda: False)
 
-        func_patcher_is_socket = unittest.mock.patch.object(
-                daemon.daemon, "is_socket",
-                side_effect=fake_is_socket)
-        func_patcher_is_socket.start()
-        self.addCleanup(func_patcher_is_socket.stop)
+        func_patcher_is_socket_file = unittest.mock.patch.object(
+                daemon.daemon, "is_socket_file",
+                new=fake_is_socket_file)
+        func_patcher_is_socket_file.start()
+        self.addCleanup(func_patcher_is_socket_file.stop)
 
     def test_returns_false_by_default(self):
         """ Should return False under normal circumstances. """
