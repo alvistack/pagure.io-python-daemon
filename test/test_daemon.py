@@ -1917,6 +1917,79 @@ class is_socket_TestCase(scaffold.TestCase):
         self.assertIs(result, expected_result)
 
 
+class is_socket_file_TestCase(scaffold.TestCase):
+    """ Test cases for is_socket_file function. """
+
+    def setUp(self):
+        """ Set up test fixtures. """
+        super().setUp()
+
+        def fake_getsockopt(level, optname, buflen=None):
+            result = object()
+            if optname is socket.SO_TYPE:
+                result = socket.SOCK_RAW
+            return result
+
+        self.fake_socket_getsockopt_func = fake_getsockopt
+
+        self.fake_socket_error = socket.error(
+                errno.ENOTSOCK,
+                "Socket operation on non-socket")
+
+        self.mock_socket = unittest.mock.MagicMock(spec=socket.socket)
+        self.mock_socket.getsockopt.side_effect = self.fake_socket_error
+
+        def fake_socket_fromfd(fd, family, type, proto=None):
+            return self.mock_socket
+
+        func_patcher_socket_fromfd = unittest.mock.patch.object(
+                socket, "fromfd",
+                side_effect=fake_socket_fromfd)
+        func_patcher_socket_fromfd.start()
+        self.addCleanup(func_patcher_socket_fromfd.stop)
+
+        def fake_fileno_func():
+            return self.fake_fileno
+
+        self.fake_fileno_func = fake_fileno_func
+        self.fake_fileno = 23
+
+        self.mock_file = unittest.mock.MagicMock(spec=io.IOBase)
+        self.mock_file.fileno.side_effect = self.fake_fileno_func
+
+    def test_returns_false_by_default(self):
+        """ Should return False under normal circumstances. """
+        expected_result = False
+        result = daemon.daemon.is_socket_file(self.mock_file)
+        self.assertIs(result, expected_result)
+
+    def test_returns_false_if_file_is_closed(self):
+        """ Should return False if file is currently closed. """
+        self.mock_file.closed = True
+        fileno_error = ValueError("I/O operation on closed file")
+        self.mock_file.fileno.side_effect = fileno_error
+        expected_result = False
+        result = daemon.daemon.is_socket_file(self.mock_file)
+        self.assertIs(result, expected_result)
+
+    def test_returns_true_if_stdin_is_socket(self):
+        """ Should return True if `stdin` is a socket. """
+        getsockopt = self.mock_socket.getsockopt
+        getsockopt.side_effect = self.fake_socket_getsockopt_func
+        expected_result = True
+        result = daemon.daemon.is_socket_file(self.mock_file)
+        self.assertIs(result, expected_result)
+
+    def test_returns_false_if_stdin_socket_raises_error(self):
+        """ Should return True if `stdin` is a socket and raises error. """
+        getsockopt = self.mock_socket.getsockopt
+        getsockopt.side_effect = socket.error(
+                object(), "Weird socket stuff")
+        expected_result = True
+        result = daemon.daemon.is_socket_file(self.mock_file)
+        self.assertIs(result, expected_result)
+
+
 class is_process_started_by_superserver_TestCase(scaffold.TestCase):
     """ Test cases for is_process_started_by_superserver function. """
 

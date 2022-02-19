@@ -740,6 +740,41 @@ def is_socket(fd):
     return result
 
 
+def is_socket_file(file):
+    """ Determine whether the `file` is a socket.
+
+        :param file: The file (an `io.IOBase` instance) to interrogate.
+        :return: ``True`` iff `file` is a socket; otherwise ``False``.
+
+        Query the socket type of the file descriptor of `file`. If there is no
+        error, the file is a socket.
+        """
+    result = False
+
+    try:
+        file_fd = file.fileno()
+    except ValueError:
+        # The file doesn't have a file descriptor.
+        file_fd = None
+
+    try:
+        file_socket = socket.fromfd(file_fd, socket.AF_INET, socket.SOCK_RAW)
+        file_socket.getsockopt(socket.SOL_SOCKET, socket.SO_TYPE)
+    except socket.error as exc:
+        exc_errno = exc.args[0]
+        if exc_errno == errno.ENOTSOCK:
+            # Socket operation on non-socket.
+            pass
+        else:
+            # Some other socket error.
+            result = True
+    else:
+        # No error getting socket type.
+        result = True
+
+    return result
+
+
 def is_process_started_by_superserver():
     """ Determine whether the current process is started by the superserver.
 
