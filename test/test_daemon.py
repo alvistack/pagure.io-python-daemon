@@ -21,6 +21,7 @@ import sys
 import tempfile
 from types import ModuleType
 import unittest.mock
+import warnings
 
 from . import scaffold
 from .test_pidfile import (
@@ -1860,7 +1861,7 @@ class is_process_started_by_init_TestCase(scaffold.TestCase):
 
 
 class is_socket_TestCase(scaffold.TestCase):
-    """ Test cases for is_socket function. """
+    """ Test cases for `is_socket` function. """
 
     def setUp(self):
         """ Set up test fixtures. """
@@ -1889,6 +1890,17 @@ class is_socket_TestCase(scaffold.TestCase):
                 side_effect=fake_socket_fromfd)
         func_patcher_socket_fromfd.start()
         self.addCleanup(func_patcher_socket_fromfd.stop)
+
+        warnings_catcher = warnings.catch_warnings(record=True)
+        self.caught_warnings = warnings_catcher.__enter__()
+        self.addCleanup(warnings_catcher.__exit__)
+
+    def test_issues_deprecation_warning(self):
+        """ Should issue a `DeprecationWarning`. """
+        self.assertWarns(
+                DeprecationWarning,
+                daemon.daemon.is_socket,
+                self.getUniqueInteger())
 
     def test_returns_false_by_default(self):
         """ Should return False under normal circumstances. """

@@ -15,6 +15,7 @@ import resource
 import signal
 import socket
 import sys
+import warnings
 
 
 class DaemonError(Exception):
@@ -720,6 +721,9 @@ def is_socket(fd):
         Query the socket type of `fd`. If there is no error, the file is a
         socket.
         """
+    warnings.warn(
+            DeprecationWarning("migrate to `is_socket_file` instead"))
+
     result = False
 
     try:

@@ -30,6 +30,11 @@ Changed:
 
   Closes: Pagure #62. Thanks to Miro Hrončok for the report.
 
+* Deprecate helper function `is_socket`.
+
+  The function incorrectly causes `ValueError` when the file object is already
+  closed. Migrate to the new `is_socket_file` helper function instead.
+
 Removed:
 
 * Drop backward-compatible helpers that provided Python 2 support.
