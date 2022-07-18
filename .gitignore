@@ -22,6 +22,8 @@ __pycache__/
 /htmlcov/
 /.tox/
 
+.pybuild/
+
 
 # Local variables:
 # coding: utf-8
