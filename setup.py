@@ -54,10 +54,6 @@ setup_kwargs = dict(
 
         # Setuptools metadata.
         zip_safe=False,
-        setup_requires=[
-            "docutils",
-            "twine",
-            ],
         test_suite="setup.test_suite",
         tests_require=test_requirements,
         install_requires=[
