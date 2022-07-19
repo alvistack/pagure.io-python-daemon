@@ -68,6 +68,11 @@ class PackageImport_TestCase(scaffold.TestCase):
         result = importlib.__import__('daemon', fromlist=['DaemonContext'])
         self.assertIs(daemon.DaemonContext, result.DaemonContext)
 
+    def test_from_daemon_import_all_returns_module_with_daemoncontext(self):
+        """ Should return a module with `DaemonContext` in its namespace. """
+        result = importlib.__import__('daemon', fromlist=['*'])
+        self.assertIs(daemon.DaemonContext, result.DaemonContext)
+
 
 def setup_daemon_context_fixtures(testcase):
     """ Set up common test fixtures for DaemonContext test case.

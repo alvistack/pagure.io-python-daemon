@@ -33,7 +33,7 @@
 from .daemon import DaemonContext
 
 
-__all__ = [DaemonContext]
+__all__ = ['DaemonContext']
 
 
 # Copyright © 2009–2022 Ben Finney <ben+python@benfinney.id.au>

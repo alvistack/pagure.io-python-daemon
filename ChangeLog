@@ -20,6 +20,10 @@ Bugs Fixed:
 
   Closes: Pagure #64. Thanks to Mark Richman for the report.
 
+* Correct use of names to allow `from daemon import *`.
+
+  Closes: Pagure #65. Thanks to July Tikhonov for the report.
+
 Changed:
 
 * Speed daemon start time by computing candidate file descriptors once.
