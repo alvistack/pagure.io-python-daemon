@@ -11,6 +11,7 @@ import collections
 import contextlib
 import errno
 import functools
+import importlib
 import io
 import os
 import pwd
@@ -52,6 +53,20 @@ class ModuleExceptions_TestCase(scaffold.Exception_TestCase):
                 'types': [daemon.daemon.DaemonError, OSError],
                 }),
             ])
+
+
+class PackageImport_TestCase(scaffold.TestCase):
+    """ Test cases for package import behaviour. """
+
+    def test_import_daemon_returns_module(self):
+        """ Should return a module. """
+        result = importlib.__import__('daemon')
+        self.assertEqual(ModuleType, type(result))
+
+    def test_from_daemon_import_name_returns_module_with_daemoncontext(self):
+        """ Should return a module with `DaemonContext` in its namespace. """
+        result = importlib.__import__('daemon', fromlist=['DaemonContext'])
+        self.assertIs(daemon.DaemonContext, result.DaemonContext)
 
 
 def setup_daemon_context_fixtures(testcase):
