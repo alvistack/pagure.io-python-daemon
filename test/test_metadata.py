@@ -19,9 +19,9 @@ import pkg_resources
 import testtools.helpers
 import testtools.matchers
 
-from . import scaffold
-
 import daemon._metadata as metadata
+
+from . import scaffold
 
 
 class HasAttribute(testtools.matchers.Matcher):

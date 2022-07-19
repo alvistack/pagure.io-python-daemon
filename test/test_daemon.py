@@ -23,13 +23,13 @@ from types import ModuleType
 import unittest.mock
 import warnings
 
+import daemon
+
 from . import scaffold
 from .test_pidfile import (
         FakeFileDescriptorStringIO,
         setup_pidfile_fixtures,
         )
-
-import daemon
 
 
 class ModuleExceptions_TestCase(scaffold.Exception_TestCase):

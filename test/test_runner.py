@@ -18,6 +18,10 @@ import unittest.mock
 
 import lockfile
 
+import daemon.daemon
+import daemon.pidfile
+import daemon.runner
+
 from . import scaffold
 from .test_daemon import (
         setup_streams_fixtures,
@@ -28,10 +32,6 @@ from .test_pidfile import (
         make_pidlockfile_scenarios,
         setup_pidfile_fixtures,
         )
-
-import daemon.daemon
-import daemon.pidfile
-import daemon.runner
 
 
 class ModuleExceptions_TestCase(scaffold.Exception_TestCase):

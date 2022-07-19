@@ -18,9 +18,9 @@ import unittest.mock
 
 import lockfile
 
-from . import scaffold
-
 import daemon.pidfile
+
+from . import scaffold
 
 
 class FakeFileDescriptorStringIO(io.StringIO, object):
