@@ -41,6 +41,10 @@ test_requirements = [
         "docutils",
         ]
 
+devel_requirements = [
+        "twine",
+        ] + test_requirements
+
 
 setup_kwargs = dict(
         distclass=version.ChangelogAwareDistribution,
@@ -66,6 +70,7 @@ setup_kwargs = dict(
             ],
         extras_require={
             'test': test_requirements,
+            'devel': devel_requirements,
             },
 
         # PyPI metadata.
