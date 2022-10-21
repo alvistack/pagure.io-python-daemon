@@ -60,7 +60,6 @@ setup_kwargs = dict(
         zip_safe=False,
         setup_requires=[
             "docutils",
-            "twine",
             ],
         test_suite="setup.test_suite",
         tests_require=test_requirements,

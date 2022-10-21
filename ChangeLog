@@ -14,9 +14,12 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Changes:
+Bugs Fixed:
 
-* None.
+* Declare Twine as a development dependency (not a build dependency).
+
+  Closes: Pagure #55. Thanks to Jason Andryuk for the report.
+  Thanks to James Hilliard for the implementation.
 
 
 Version 2.3.1
