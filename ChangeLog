@@ -21,6 +21,16 @@ Bugs Fixed:
   Closes: Pagure #55. Thanks to Jason Andryuk for the report.
   Thanks to James Hilliard for the implementation.
 
+* Declare Python3 or later is required.
+
+  Closes: Pagure #66. Thanks to Nick M. for the report.
+
+Removed:
+
+* The earlier version 2.3.1 is now “yanked” from PyPI (unlisted and not an
+  installation candidate), because that version incorrectly permitted
+  installation on Python 2. Thanks to Nick M. for the report.
+
 
 Version 2.3.1
 =============
