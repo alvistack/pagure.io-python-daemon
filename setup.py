@@ -1,4 +1,7 @@
 # setup.py
+# Python Setuptools configuration program for this distribution.
+# Documentation: <URL:https://packaging.python.org/guides/distributing-packages-using-setuptools/#setup-py>.
+
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
 # This is free software, and you are welcome to redistribute it under
