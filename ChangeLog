@@ -21,7 +21,7 @@ Bugs Fixed:
   Closes: Pagure #55. Thanks to Jason Andryuk for the report.
   Thanks to James Hilliard for the implementation.
 
-* Declare Python3 or later is required.
+* Specify the built package requires Python 3 or later.
 
   Closes: Pagure #66. Thanks to Nick M. for the report.
 
