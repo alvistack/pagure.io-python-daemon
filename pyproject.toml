@@ -5,7 +5,7 @@
 [build-system]
 
 # Minimum requirements for the build system.
-requires = ["setuptools", "wheel", "docutils"]
+requires = ["setuptools", "docutils"]
 
 
 # Local-variables:

@@ -14,9 +14,17 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Changes:
+Removed:
 
-* None.
+* Remove redundant ‘wheel’ from the requirements specification.
+
+  As described by the Python Packaging Authority:
+
+      This [‘wheel’] dependency is exposed automatically by setuptools and the
+      users do not need to declare it explicitly — it will be installed by PEP
+      517 front-ends automatically, when building wheels.
+
+  Thanks to Michał Górny for the implementation.
 
 
 Version 2.3.2
