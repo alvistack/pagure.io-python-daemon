@@ -24,7 +24,6 @@
 import collections
 import datetime
 import distutils
-import distutils.cmd
 import distutils.command.build
 import distutils.command.build_py
 import distutils.dist
