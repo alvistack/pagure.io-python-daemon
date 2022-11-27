@@ -868,6 +868,22 @@ _total_file_descriptor_range = (0, get_maximum_file_descriptors())
 _total_file_descriptor_set = set(range(*_total_file_descriptor_range))
 
 
+def _validate_fd_values(fds):
+    """ Validate the collection of file descriptors `fds`.
+
+        :param fds: A collection of file descriptors.
+        :raise TypeError: When any of the `fds` are an invalid type.
+        :return: ``None``.
+
+        A valid file descriptor is an `int` value.
+        """
+    invalid_fds = set(filter((lambda fd: not isinstance(fd, int)), fds))
+    if invalid_fds:
+        value_to_complain_about = next(invalid_fds)
+        raise TypeError(
+                "not an integer file descriptor", value_to_complain_about)
+
+
 def _get_candidate_file_descriptors(exclude):
     """ Get the collection of candidate file descriptors.
 
@@ -884,6 +900,7 @@ def _get_candidate_file_descriptors(exclude):
         The `maxfd` value is determined from the standard library
         `resource` module.
         """
+    _validate_fd_values(exclude)
     candidates = _total_file_descriptor_set.difference(exclude)
     return candidates
 

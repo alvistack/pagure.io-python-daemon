@@ -1626,6 +1626,51 @@ class _get_candidate_file_descriptor_ranges_TestCase(
                     **self.test_kwargs)
         self.assertEqual(result, self.expected_result)
 
+
+class _get_candidate_file_descriptor_ranges_ErrorTestCase(
+        scaffold.TestCaseWithScenarios):
+    """
+    Error test cases for function `_get_candidate_file_descriptor_ranges`.
+    """
+
+    scenarios = [
+            ('exclude-set-includes-string', {
+                'fake_maxfd': 5,
+                'test_kwargs': {
+                    'exclude': {4, "b0gUs", 7},
+                },
+                'expected_error_type': TypeError,
+                }),
+            ('exclude-set-includes-float', {
+                'fake_maxfd': 5,
+                'test_kwargs': {
+                    'exclude': {4, 5.2, 7},
+                },
+                'expected_error_type': TypeError,
+                }),
+            ('exclude-set-includes-float-nan', {
+                'fake_maxfd': 5,
+                'test_kwargs': {
+                    'exclude': {4, float('nan'), 7},
+                },
+                'expected_error_type': TypeError,
+                }),
+            ('exclude-set-includes-none', {
+                'fake_maxfd': 5,
+                'test_kwargs': {
+                    'exclude': {4, None, 7},
+                },
+                'expected_error_type': TypeError,
+                }),
+            ]
+
+    def test_raises_expected_error(self):
+        """ Should raise the expected error type for the condition. """
+        self.assertRaises(
+            self.expected_error_type,
+            daemon.daemon._get_candidate_file_descriptor_ranges,
+            **self.test_kwargs)
+
 
 @unittest.mock.patch.object(os, "closerange")
 class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):

@@ -14,6 +14,14 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
+Changed:
+
+* Raise a TypeError if any `exclude` values are not valid file descriptors.
+
+  Formerly, an invalid value might be silently ignored.
+
+  Thanks to Igor Kholopov for the suggestion.
+
 Removed:
 
 * Remove redundant ‘wheel’ from the requirements specification.
