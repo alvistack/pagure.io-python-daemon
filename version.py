@@ -26,7 +26,6 @@ import datetime
 import distutils
 import distutils.command.build
 import distutils.command.build_py
-import distutils.dist
 import distutils.version
 import functools
 import io
@@ -38,6 +37,7 @@ import textwrap
 
 import setuptools
 import setuptools.command.egg_info
+import setuptools.dist
 
 
 def ensure_class_bases_begin_with(namespace, class_name, base_class):
@@ -528,7 +528,7 @@ changelog_filename = "ChangeLog"
 def get_changelog_path(distribution, filename=changelog_filename):
     """ Get the changelog file path for the distribution.
 
-        :param distribution: The distutils.dist.Distribution instance.
+        :param distribution: The setuptools.dist.Distribution instance.
         :param filename: The base filename of the changelog document.
         :return: Filesystem path of the changelog document, or ``None``
             if not discoverable.
@@ -612,7 +612,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
         self.write_file("version info", self.outfile_path, content)
 
 
-class ChangelogAwareDistribution(distutils.dist.Distribution, object):
+class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
     """ A distribution of Python code for installation.
 
         This class gets the following attributes instead from the

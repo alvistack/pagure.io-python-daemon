@@ -9,7 +9,6 @@
 
 import collections
 import distutils.cmd
-import distutils.dist
 import distutils.fancy_getopt
 import errno
 import functools
@@ -26,6 +25,7 @@ import docutils.nodes
 import docutils.writers
 import setuptools
 import setuptools.command
+import setuptools.dist
 import testscenarios
 import testtools
 
@@ -1046,7 +1046,10 @@ class serialise_version_info_from_mapping_TestCase(
 DistributionMetadata_defaults = {
         name: None
         for name in list(collections.OrderedDict.fromkeys(
-            distutils.dist.DistributionMetadata._METHOD_BASENAMES))}
+            getattr(
+                setuptools.distutils.dist.DistributionMetadata,
+                '_METHOD_BASENAMES')))
+        }
 FakeDistributionMetadata = collections.namedtuple(
         'FakeDistributionMetadata', DistributionMetadata_defaults.keys())
 
@@ -1081,7 +1084,7 @@ class get_changelog_path_TestCase(
         testscenarios.WithScenarios, testtools.TestCase):
     """ Test cases for ‘get_changelog_path’ function. """
 
-    default_path = ""
+    default_src_root = "/dolor/sit/amet"
     default_script_filename = "setup.py"
 
     scenarios = [
@@ -1089,11 +1092,8 @@ class get_changelog_path_TestCase(
             ('unusual script name', {
                 'script_filename': "lorem_ipsum",
                 }),
-            ('relative script path', {
-                'script_directory': "dolor/sit/amet",
-                }),
-            ('absolute script path', {
-                'script_directory': "/dolor/sit/amet",
+            ('specify root path', {
+                'src_root': "/diam/ornare",
                 }),
             ('specify filename', {
                 'changelog_filename': "adipiscing",
@@ -1104,25 +1104,24 @@ class get_changelog_path_TestCase(
         """ Set up test fixtures. """
         super().setUp()
 
-        test_distribution = distutils.dist.Distribution()
+        test_distribution = setuptools.dist.Distribution()
         self.test_distribution = unittest.mock.MagicMock(
                 test_distribution)
 
-        if not hasattr(self, 'script_directory'):
-            self.script_directory = self.default_path
+        if not hasattr(self, 'src_root'):
+            self.src_root = self.default_src_root
         if not hasattr(self, 'script_filename'):
             self.script_filename = self.default_script_filename
 
         self.test_distribution.packages = None
-        self.test_distribution.package_dir = {'': self.script_directory}
+        self.test_distribution.package_dir = {'': self.src_root}
         self.test_distribution.script_name = self.script_filename
 
         changelog_filename = version.changelog_filename
         if hasattr(self, 'changelog_filename'):
             changelog_filename = self.changelog_filename
 
-        self.expected_result = os.path.join(
-                self.script_directory, changelog_filename)
+        self.expected_result = os.path.join(self.src_root, changelog_filename)
 
     def test_returns_expected_result(self):
         """ Should return expected result. """
@@ -1145,7 +1144,7 @@ class WriteVersionInfoCommand_BaseTestCase(
 
         fake_distribution_name = self.getUniqueString()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_distribution.metadata.name = fake_distribution_name
 
 
@@ -1340,7 +1339,7 @@ class has_changelog_TestCase(
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_command = version.EggInfoCommand(
                 self.test_distribution)
 
@@ -1491,7 +1490,7 @@ class EggInfoCommand_BaseTestCase(testtools.TestCase):
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
 
 
@@ -1551,7 +1550,7 @@ class BuildCommand_BaseTestCase(testtools.TestCase):
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
 
 
