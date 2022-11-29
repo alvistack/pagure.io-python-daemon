@@ -24,8 +24,6 @@
 import collections
 import datetime
 import distutils
-import distutils.command.build
-import distutils.command.build_py
 import distutils.version
 import functools
 import io
@@ -36,6 +34,8 @@ import sys
 import textwrap
 
 import setuptools
+import setuptools.command.build
+import setuptools.command.build_py
 import setuptools.command.egg_info
 import setuptools.dist
 
@@ -533,7 +533,7 @@ def get_changelog_path(distribution, filename=changelog_filename):
         :return: Filesystem path of the changelog document, or ``None``
             if not discoverable.
         """
-    build_py_command = distutils.command.build_py.build_py(distribution)
+    build_py_command = setuptools.command.build_py.build_py(distribution)
     build_py_command.finalize_options()
     setup_dirname = build_py_command.get_package_dir("")
     filepath = os.path.join(setup_dirname, filename)
@@ -553,11 +553,11 @@ def has_changelog(command):
     return result
 
 
-class BuildCommand(distutils.command.build.build, object):
+class BuildCommand(setuptools.command.build.build, object):
     """ Custom ‘build’ command for this distribution. """
 
     sub_commands = (
-            distutils.command.build.build.sub_commands + [
+            setuptools.command.build.build.sub_commands + [
                 ('egg_info', None),
             ])
 

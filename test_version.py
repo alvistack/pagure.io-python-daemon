@@ -8,7 +8,6 @@
 """ Unit test for ‘version’ packaging module. """
 
 import collections
-import distutils.cmd
 import distutils.fancy_getopt
 import errno
 import functools
@@ -1151,10 +1150,10 @@ class WriteVersionInfoCommand_BaseTestCase(
 class WriteVersionInfoCommand_TestCase(WriteVersionInfoCommand_BaseTestCase):
     """ Test cases for ‘WriteVersionInfoCommand’ class. """
 
-    def test_subclass_of_distutils_command(self):
-        """ Should be a subclass of ‘distutils.cmd.Command’. """
+    def test_subclass_of_setuptools_command(self):
+        """ Should be a subclass of ‘setuptools.Command’. """
         instance = version.WriteVersionInfoCommand(self.test_distribution)
-        self.assertIsInstance(instance, distutils.cmd.Command)
+        self.assertIsInstance(instance, setuptools.Command)
 
 
 class WriteVersionInfoCommand_user_options_TestCase(
@@ -1544,7 +1543,7 @@ class BuildCommand_BaseTestCase(testtools.TestCase):
     """ Base for test cases for class ‘BuildCommand’. """
 
     command_class = version.BuildCommand
-    base_command_class = distutils.command.build.build
+    base_command_class = setuptools.command.build.build
 
     def setUp(self):
         """ Set up test fixtures. """
@@ -1568,7 +1567,7 @@ class BuildCommand_TestCase(
 
 
 @unittest.mock.patch.object(
-        distutils.command.build.build, "run",
+        setuptools.command.build.build, "run",
         return_value=None,
         )
 class BuildCommand_run_TestCase(BuildCommand_BaseTestCase):
