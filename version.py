@@ -13,7 +13,7 @@
 
     This module handles transformation from the ‘ChangeLog’ to a
     mapping of version information, serialised as JSON. It also
-    provides functionality for Distutils to use this information.
+    provides functionality for Setuptools to use this information.
 
     Requires:
 
@@ -23,7 +23,6 @@
 
 import collections
 import datetime
-import distutils
 import functools
 import io
 import json

@@ -1461,7 +1461,7 @@ IsSubset = testtools.matchers.MatchesPredicateWithParams(
 
 
 class Command_BaseTestCase:
-    """ Base for test cases for distutils command classes. """
+    """ Base for test cases for Setuptools command classes. """
 
     def test_subclass_of_base_command(self):
         """ Should be a subclass of expected base command class.. """
