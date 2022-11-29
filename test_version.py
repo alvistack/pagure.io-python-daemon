@@ -1381,7 +1381,7 @@ class has_changelog_TestCase(
                 self.test_distribution)
 
     def test_returns_expected_result(self):
-        """ Should be a subclass of ‘distutils.cmd.Command’. """
+        """ Should return the expected result. """
         result = version.has_changelog(self.test_command)
         self.assertEqual(self.expected_result, result)
 
