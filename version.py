@@ -27,7 +27,6 @@ import distutils
 import distutils.command.build
 import distutils.command.build_py
 import distutils.dist
-import distutils.errors
 import distutils.version
 import functools
 import io

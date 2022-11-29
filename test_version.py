@@ -10,7 +10,6 @@
 import collections
 import distutils.cmd
 import distutils.dist
-import distutils.errors
 import distutils.fancy_getopt
 import errno
 import functools
