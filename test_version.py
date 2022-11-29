@@ -472,10 +472,6 @@ class ChangeLogEntry_version_TestCase(ChangeLogEntry_BaseTestCase):
                 'test_args': {'version': "1.b0gUs.0"},
                 'expected_error': InvalidVersion,
                 }),
-            ('too many parts', {
-                'test_args': {'version': "1.2.3.4.5"},
-                'expected_error': InvalidVersion,
-                }),
             ]
 
     def test_has_expected_version(self):
