@@ -24,7 +24,6 @@
 import collections
 import datetime
 import distutils
-import distutils.version
 import functools
 import io
 import json
@@ -38,6 +37,7 @@ import setuptools.command.build
 import setuptools.command.build_py
 import setuptools.command.egg_info
 import setuptools.dist
+import setuptools.extern.packaging.version
 
 
 def ensure_class_bases_begin_with(namespace, class_name, base_class):
@@ -187,11 +187,7 @@ class ChangeLogEntry:
             # A valid non-version value.
             return None
 
-        match = distutils.version.StrictVersion.version_re.match(value)
-        if match is None:
-            raise ValueError(
-                    "not a valid version string {value!r}".format(
-                        value=value))
+        valid_version = setuptools.extern.packaging.version.Version(value)
 
     @classmethod
     def validate_maintainer(cls, value):

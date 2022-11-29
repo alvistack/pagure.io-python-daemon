@@ -25,6 +25,7 @@ import docutils.writers
 import setuptools
 import setuptools.command
 import setuptools.dist
+from setuptools.extern.packaging.version import InvalidVersion
 import testscenarios
 import testtools
 
@@ -461,19 +462,19 @@ class ChangeLogEntry_version_TestCase(ChangeLogEntry_BaseTestCase):
                 }),
             ('non-number', {
                 'test_args': {'version': "b0gUs"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ('negative', {
                 'test_args': {'version': "-1.0"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ('non-number parts', {
                 'test_args': {'version': "1.b0gUs.0"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ('too many parts', {
                 'test_args': {'version': "1.2.3.4.5"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ]
 
