@@ -8,7 +8,6 @@
 """ Unit test for ‘version’ packaging module. """
 
 import collections
-import distutils.fancy_getopt
 import errno
 import functools
 import io
@@ -1163,13 +1162,13 @@ class WriteVersionInfoCommand_user_options_TestCase(
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
-        self.commandline_parser = distutils.fancy_getopt.FancyGetopt(
+        self.FancyGetopt = setuptools.distutils.fancy_getopt.FancyGetopt
+        self.commandline_parser = self.FancyGetopt(
                 self.test_instance.user_options)
 
     def test_parses_correctly_as_fancy_getopt(self):
         """ Should parse correctly in ‘FancyGetopt’. """
-        self.assertIsInstance(
-                self.commandline_parser, distutils.fancy_getopt.FancyGetopt)
+        self.assertIsInstance(self.commandline_parser, self.FancyGetopt)
 
     def test_includes_base_class_user_options(self):
         """ Should include base class's user_options. """
