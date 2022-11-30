@@ -1,6 +1,6 @@
 # setup.py
 # Python Setuptools configuration program for this distribution.
-# Documentation: <URL:https://packaging.python.org/guides/distributing-packages-using-setuptools/#setup-py>.
+# Documentation: <URL:https://packaging.python.org/guides/distributing-packages-using-setuptools/#setup-py>.  # noqa: E501
 
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
