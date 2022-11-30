@@ -8,9 +8,6 @@
 """ Unit test for ‘version’ packaging module. """
 
 import collections
-import distutils.cmd
-import distutils.dist
-import distutils.fancy_getopt
 import errno
 import functools
 import io
@@ -26,6 +23,8 @@ import docutils.nodes
 import docutils.writers
 import setuptools
 import setuptools.command
+import setuptools.dist
+from setuptools.extern.packaging.version import InvalidVersion
 import testscenarios
 import testtools
 
@@ -462,19 +461,15 @@ class ChangeLogEntry_version_TestCase(ChangeLogEntry_BaseTestCase):
                 }),
             ('non-number', {
                 'test_args': {'version': "b0gUs"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ('negative', {
                 'test_args': {'version': "-1.0"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ('non-number parts', {
                 'test_args': {'version': "1.b0gUs.0"},
-                'expected_error': ValueError,
-                }),
-            ('too many parts', {
-                'test_args': {'version': "1.2.3.4.5"},
-                'expected_error': ValueError,
+                'expected_error': InvalidVersion,
                 }),
             ]
 
@@ -1046,7 +1041,10 @@ class serialise_version_info_from_mapping_TestCase(
 DistributionMetadata_defaults = {
         name: None
         for name in list(collections.OrderedDict.fromkeys(
-            distutils.dist.DistributionMetadata._METHOD_BASENAMES))}
+            getattr(
+                setuptools.distutils.dist.DistributionMetadata,
+                '_METHOD_BASENAMES')))
+        }
 FakeDistributionMetadata = collections.namedtuple(
         'FakeDistributionMetadata', DistributionMetadata_defaults.keys())
 
@@ -1081,7 +1079,7 @@ class get_changelog_path_TestCase(
         testscenarios.WithScenarios, testtools.TestCase):
     """ Test cases for ‘get_changelog_path’ function. """
 
-    default_path = ""
+    default_src_root = "/dolor/sit/amet"
     default_script_filename = "setup.py"
 
     scenarios = [
@@ -1089,11 +1087,8 @@ class get_changelog_path_TestCase(
             ('unusual script name', {
                 'script_filename': "lorem_ipsum",
                 }),
-            ('relative script path', {
-                'script_directory': "dolor/sit/amet",
-                }),
-            ('absolute script path', {
-                'script_directory': "/dolor/sit/amet",
+            ('specify root path', {
+                'src_root': "/diam/ornare",
                 }),
             ('specify filename', {
                 'changelog_filename': "adipiscing",
@@ -1104,25 +1099,24 @@ class get_changelog_path_TestCase(
         """ Set up test fixtures. """
         super().setUp()
 
-        test_distribution = distutils.dist.Distribution()
+        test_distribution = setuptools.dist.Distribution()
         self.test_distribution = unittest.mock.MagicMock(
                 test_distribution)
 
-        if not hasattr(self, 'script_directory'):
-            self.script_directory = self.default_path
+        if not hasattr(self, 'src_root'):
+            self.src_root = self.default_src_root
         if not hasattr(self, 'script_filename'):
             self.script_filename = self.default_script_filename
 
         self.test_distribution.packages = None
-        self.test_distribution.package_dir = {'': self.script_directory}
+        self.test_distribution.package_dir = {'': self.src_root}
         self.test_distribution.script_name = self.script_filename
 
         changelog_filename = version.changelog_filename
         if hasattr(self, 'changelog_filename'):
             changelog_filename = self.changelog_filename
 
-        self.expected_result = os.path.join(
-                self.script_directory, changelog_filename)
+        self.expected_result = os.path.join(self.src_root, changelog_filename)
 
     def test_returns_expected_result(self):
         """ Should return expected result. """
@@ -1145,17 +1139,17 @@ class WriteVersionInfoCommand_BaseTestCase(
 
         fake_distribution_name = self.getUniqueString()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_distribution.metadata.name = fake_distribution_name
 
 
 class WriteVersionInfoCommand_TestCase(WriteVersionInfoCommand_BaseTestCase):
     """ Test cases for ‘WriteVersionInfoCommand’ class. """
 
-    def test_subclass_of_distutils_command(self):
-        """ Should be a subclass of ‘distutils.cmd.Command’. """
+    def test_subclass_of_setuptools_command(self):
+        """ Should be a subclass of ‘setuptools.Command’. """
         instance = version.WriteVersionInfoCommand(self.test_distribution)
-        self.assertIsInstance(instance, distutils.cmd.Command)
+        self.assertIsInstance(instance, setuptools.Command)
 
 
 class WriteVersionInfoCommand_user_options_TestCase(
@@ -1168,13 +1162,13 @@ class WriteVersionInfoCommand_user_options_TestCase(
 
         self.test_instance = version.WriteVersionInfoCommand(
                 self.test_distribution)
-        self.commandline_parser = distutils.fancy_getopt.FancyGetopt(
+        self.FancyGetopt = setuptools.distutils.fancy_getopt.FancyGetopt
+        self.commandline_parser = self.FancyGetopt(
                 self.test_instance.user_options)
 
     def test_parses_correctly_as_fancy_getopt(self):
         """ Should parse correctly in ‘FancyGetopt’. """
-        self.assertIsInstance(
-                self.commandline_parser, distutils.fancy_getopt.FancyGetopt)
+        self.assertIsInstance(self.commandline_parser, self.FancyGetopt)
 
     def test_includes_base_class_user_options(self):
         """ Should include base class's user_options. """
@@ -1340,7 +1334,7 @@ class has_changelog_TestCase(
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_command = version.EggInfoCommand(
                 self.test_distribution)
 
@@ -1467,7 +1461,7 @@ IsSubset = testtools.matchers.MatchesPredicateWithParams(
 
 
 class Command_BaseTestCase:
-    """ Base for test cases for distutils command classes. """
+    """ Base for test cases for Setuptools command classes. """
 
     def test_subclass_of_base_command(self):
         """ Should be a subclass of expected base command class.. """
@@ -1491,7 +1485,7 @@ class EggInfoCommand_BaseTestCase(testtools.TestCase):
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
 
 
@@ -1545,13 +1539,13 @@ class BuildCommand_BaseTestCase(testtools.TestCase):
     """ Base for test cases for class ‘BuildCommand’. """
 
     command_class = version.BuildCommand
-    base_command_class = distutils.command.build.build
+    base_command_class = setuptools.command.build.build
 
     def setUp(self):
         """ Set up test fixtures. """
         super().setUp()
 
-        self.test_distribution = distutils.dist.Distribution()
+        self.test_distribution = setuptools.dist.Distribution()
         self.test_instance = self.command_class(self.test_distribution)
 
 
@@ -1569,7 +1563,7 @@ class BuildCommand_TestCase(
 
 
 @unittest.mock.patch.object(
-        distutils.command.build.build, "run",
+        setuptools.command.build.build, "run",
         return_value=None,
         )
 class BuildCommand_run_TestCase(BuildCommand_BaseTestCase):

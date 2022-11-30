@@ -13,7 +13,7 @@
 
     This module handles transformation from the ‘ChangeLog’ to a
     mapping of version information, serialised as JSON. It also
-    provides functionality for Distutils to use this information.
+    provides functionality for Setuptools to use this information.
 
     Requires:
 
@@ -23,11 +23,6 @@
 
 import collections
 import datetime
-import distutils
-import distutils.command.build
-import distutils.command.build_py
-import distutils.dist
-import distutils.version
 import functools
 import io
 import json
@@ -37,7 +32,11 @@ import sys
 import textwrap
 
 import setuptools
+import setuptools.command.build
+import setuptools.command.build_py
 import setuptools.command.egg_info
+import setuptools.dist
+import setuptools.extern.packaging.version
 
 
 def ensure_class_bases_begin_with(namespace, class_name, base_class):
@@ -187,11 +186,7 @@ class ChangeLogEntry:
             # A valid non-version value.
             return None
 
-        match = distutils.version.StrictVersion.version_re.match(value)
-        if match is None:
-            raise ValueError(
-                    "not a valid version string {value!r}".format(
-                        value=value))
+        valid_version = setuptools.extern.packaging.version.Version(value)
 
     @classmethod
     def validate_maintainer(cls, value):
@@ -528,12 +523,12 @@ changelog_filename = "ChangeLog"
 def get_changelog_path(distribution, filename=changelog_filename):
     """ Get the changelog file path for the distribution.
 
-        :param distribution: The distutils.dist.Distribution instance.
+        :param distribution: The setuptools.dist.Distribution instance.
         :param filename: The base filename of the changelog document.
         :return: Filesystem path of the changelog document, or ``None``
             if not discoverable.
         """
-    build_py_command = distutils.command.build_py.build_py(distribution)
+    build_py_command = setuptools.command.build_py.build_py(distribution)
     build_py_command.finalize_options()
     setup_dirname = build_py_command.get_package_dir("")
     filepath = os.path.join(setup_dirname, filename)
@@ -553,11 +548,11 @@ def has_changelog(command):
     return result
 
 
-class BuildCommand(distutils.command.build.build, object):
+class BuildCommand(setuptools.command.build.build, object):
     """ Custom ‘build’ command for this distribution. """
 
     sub_commands = (
-            distutils.command.build.build.sub_commands + [
+            setuptools.command.build.build.sub_commands + [
                 ('egg_info', None),
             ])
 
@@ -612,7 +607,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
         self.write_file("version info", self.outfile_path, content)
 
 
-class ChangelogAwareDistribution(distutils.dist.Distribution, object):
+class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
     """ A distribution of Python code for installation.
 
         This class gets the following attributes instead from the
