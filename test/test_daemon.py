@@ -1485,72 +1485,6 @@ def patch_total_file_descriptor_range(testcase, fake_maxfd):
     testcase.addCleanup(attr_patcher.stop)
 
 
-def make_total_file_descriptor_set_patch(testcase, fake_maxfd):
-    """ Make a `_total_file_descriptor_set` patch for the `testcase`.
-
-        :param testcase: The `unittest.TestCase` instance to patch.
-        :param fake_maxfd: The fake maximum file descriptor value.
-        :return: The `unittest.mock.patch` object.
-        """
-    attr_patcher = unittest.mock.patch.object(
-            daemon.daemon, "_total_file_descriptor_set",
-            new=set(range(0, fake_maxfd)))
-    return attr_patcher
-
-
-def patch_total_file_descriptor_set(testcase, fake_maxfd):
-    """ Patch `_total_file_descriptor_set` for the `testcase`.
-
-        :param testcase: The `unittest.TestCase` instance to patch.
-        :param fake_maxfd: The fake maximum file descriptor value.
-        :return: ``None``.
-        """
-    attr_patcher = make_total_file_descriptor_set_patch(testcase, fake_maxfd)
-    attr_patcher.start()
-    testcase.addCleanup(attr_patcher.stop)
-
-
-class _get_candidate_file_descriptors_TestCase(scaffold.TestCaseWithScenarios):
-    """ Test cases for function `_get_candidate_file_descriptors`. """
-
-    scenarios = [
-            ('exclude-three', {
-                'fake_maxfd': 10,
-                'test_kwargs': {
-                    'exclude': {3, 5, 8},
-                    },
-                'expected_result': {0, 1, 2, 4, 6, 7, 9},
-                }),
-            ('exclude-one', {
-                'fake_maxfd': 5,
-                'test_kwargs': {
-                    'exclude': {4},
-                    },
-                'expected_result': {0, 1, 2, 3},
-                }),
-            ('exclude-none', {
-                'fake_maxfd': 5,
-                'test_kwargs': {
-                    'exclude': set(),
-                },
-                'expected_result': {0, 1, 2, 3, 4},
-                }),
-            ]
-
-    def setUp(self):
-        """ Set up test fixtures. """
-        super().setUp()
-
-        patch_total_file_descriptor_range(self, fake_maxfd=self.fake_maxfd)
-        patch_total_file_descriptor_set(self, fake_maxfd=self.fake_maxfd)
-
-    def test_returns_expected_file_descriptors(self):
-        """ Should return the expected set of file descriptors. """
-        result = daemon.daemon._get_candidate_file_descriptors(
-                **self.test_kwargs)
-        self.assertEqual(result, self.expected_result)
-
-
 class _get_candidate_file_descriptor_ranges_TestCase(
         scaffold.TestCaseWithScenarios):
     """ Test cases for function `_get_candidate_file_descriptor_ranges`. """
@@ -1655,7 +1589,6 @@ class _get_candidate_file_descriptor_ranges_TestCase(
         super().setUp()
 
         patch_total_file_descriptor_range(self, fake_maxfd=self.fake_maxfd)
-        patch_total_file_descriptor_set(self, fake_maxfd=self.fake_maxfd)
 
     def test_returns_expected_file_descriptors(self):
         """ Should return the expected set of file descriptors. """
@@ -1758,7 +1691,6 @@ class close_all_open_files_TestCase(scaffold.TestCase):
         super().setUp()
 
         patch_total_file_descriptor_range(self, fake_maxfd=self.fake_maxfd)
-        patch_total_file_descriptor_set(self, fake_maxfd=self.fake_maxfd)
         self.patch_os_closerange()
 
     def patch_os_closerange(self):
