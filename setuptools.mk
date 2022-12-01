@@ -58,7 +58,7 @@ setuptools-build:
 
 .PHONY: setuptools-install
 setuptools-install:
-	$(PYTHON_SETUP) install --root=${DESTDIR} --prefix=${PREFIX}
+	$(PYTHON_SETUP) install ${PYTHON_SETUP_INSTALL_OPTS}
 
 
 .PHONY: setuptools-dist
