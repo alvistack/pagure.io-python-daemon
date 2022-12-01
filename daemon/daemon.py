@@ -864,8 +864,8 @@ def get_maximum_file_descriptors():
     return result
 
 
-_total_file_descriptor_range = (0, get_maximum_file_descriptors())
-_total_file_descriptor_set = set(range(*_total_file_descriptor_range))
+_total_file_descriptor_range = range(0, get_maximum_file_descriptors())
+_total_file_descriptor_set = set(_total_file_descriptor_range)
 
 
 def _validate_fd_values(fds):

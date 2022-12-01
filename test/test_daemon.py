@@ -1469,7 +1469,7 @@ def make_total_file_descriptor_range_patch(testcase, fake_maxfd):
         """
     attr_patcher = unittest.mock.patch.object(
             daemon.daemon, "_total_file_descriptor_range",
-            new=(0, fake_maxfd))
+            new=range(0, fake_maxfd))
     return attr_patcher
 
 
