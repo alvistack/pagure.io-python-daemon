@@ -1638,6 +1638,16 @@ class _get_candidate_file_descriptor_ranges_TestCase(
                     (0, 5),
                     ],
                 }),
+            ('exclude-within-large-candidate-range', {
+                'fake_maxfd': 0x3FFFFF0,
+                'test_kwargs': {
+                    'exclude': {0x1000000},
+                    },
+                'expected_result': [
+                    (0, 0x1000000),
+                    (0x1000001, 0x3FFFFF0),
+                    ],
+                }),
             ]
 
     def setUp(self):
