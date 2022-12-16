@@ -17,6 +17,7 @@ import unittest
 
 from setuptools import (setup, find_packages)
 
+sys.path.insert(0, os.path.dirname(__file__))
 import version
 
 
