@@ -13,7 +13,6 @@
 import os.path
 import pydoc
 import sys
-import unittest
 
 from setuptools import (setup, find_packages)
 
@@ -31,13 +30,6 @@ metadata = main_module._metadata
 (synopsis, long_description) = pydoc.splitdoc(pydoc.getdoc(main_module))
 
 
-def test_suite():
-    """ Make the test suite for this code base. """
-    loader = unittest.TestLoader()
-    suite = loader.discover(os.path.curdir, pattern='test_*.py')
-    return suite
-
-
 test_requirements = [
         "testtools",
         "testscenarios >=0.4",
@@ -65,8 +57,6 @@ setup_kwargs = dict(
         setup_requires=[
             "docutils",
             ],
-        test_suite="setup.test_suite",
-        tests_require=test_requirements,
         install_requires=[
             "setuptools",
             "lockfile >=0.10",
