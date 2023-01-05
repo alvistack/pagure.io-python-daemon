@@ -60,6 +60,11 @@ Removed:
   The ‘test’ command is formally deprecated, in favour of dedicated test
   runners. <URL: https://setuptools.pypa.io/en/stable/history.html#v41-5-0>
 
+* Remove Setuptools ‘register’ and ‘upload’ command support.
+
+  The commands to publish a distribution to PyPI are removed, in favour of the
+  Twine tool. <URL: https://setuptools.pypa.io/en/stable/history.html#v42-0-0>
+
 
 Version 2.3.2
 =============
