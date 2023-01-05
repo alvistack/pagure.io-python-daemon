@@ -39,7 +39,7 @@ Changed:
 * Migrate package version handling to use Setuptools API.
 
   The Distutils library is deprecated for direct use; see
-  <URL: https://docs.python.org/3/whatsnew/3.10.html#distutils-deprecated>.
+  `<https://docs.python.org/3/whatsnew/3.10.html#distutils-deprecated>`_.
 
   Closes: Pagure #70.
 
@@ -58,12 +58,12 @@ Removed:
 * Remove Setuptools ‘test’ command support.
 
   The ‘test’ command is formally deprecated, in favour of dedicated test
-  runners. <URL: https://setuptools.pypa.io/en/stable/history.html#v41-5-0>
+  runners. `<https://setuptools.pypa.io/en/stable/history.html#v41-5-0>`_
 
 * Remove Setuptools ‘register’ and ‘upload’ command support.
 
   The commands to publish a distribution to PyPI are removed, in favour of the
-  Twine tool. <URL: https://setuptools.pypa.io/en/stable/history.html#v42-0-0>
+  Twine tool. `<https://setuptools.pypa.io/en/stable/history.html#v42-0-0>`_
 
 
 Version 2.3.2
@@ -505,7 +505,7 @@ Changed:
   copyright notices.
 
 * Change license of library code to Apache License 2.0. Rationale at
-  <URL:http://wiki.python.org/moin/PythonSoftwareFoundationLicenseFaq#Contributing_Code_to_Python>.
+  `<http://wiki.python.org/moin/PythonSoftwareFoundationLicenseFaq#Contributing_Code_to_Python>`_.
 
 Bugs Fixed:
 
@@ -593,7 +593,7 @@ Bugs Fixed:
 
 * daemon/daemon.py: Invoke the pidfile context manager's ‘__exit__’
   method with the correct arguments (as per
-  <URL:http://docs.python.org/library/stdtypes.html#typecontextmanager>).
+  `<http://docs.python.org/library/stdtypes.html#typecontextmanager>`_).
   Thanks to Ludvig Ericson for the bug report.
 
 
