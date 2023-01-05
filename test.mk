@@ -17,7 +17,8 @@ TEST_MODULES += $(shell find ${MODULE_DIR}/ -name 'test_*.py')
 TEST_UNITTEST_OPTS ?=
 TEST_UNITTEST_NAMES ?= discover
 
-TEST_COVERAGE_RUN_OPTS ?= --branch
+TEST_COVERAGE_RUN_OPTS ?= --branch \
+	-m unittest ${TEST_UNITTEST_OPTS} ${TEST_UNITTEST_NAMES}
 TEST_COVERAGE_REPORT_OPTS ?=
 TEST_COVERAGE_HTML_OPTS ?= --directory ${coverage_html_report_dir}/
 
@@ -50,8 +51,7 @@ test-coverage-run: pip-install-test-requirements
 test-coverage-run: .coverage
 
 .coverage: ${CODE_MODULES}
-	$(PYTHON) -m coverage run ${TEST_COVERAGE_RUN_OPTS} \
-		$(CURDIR)/setup.py test
+	$(PYTHON) -m coverage run ${TEST_COVERAGE_RUN_OPTS}
 
 GENERATED_FILES += ${COVERAGE_DIR}
 
