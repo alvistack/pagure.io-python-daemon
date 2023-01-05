@@ -47,11 +47,6 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 VCS_INVENTORY ?= git ls-files
 
 
-.PHONY: setuptools-test
-setuptools-test:
-	$(PYTHON_SETUP) test
-
-
 .PHONY: setuptools-build
 setuptools-build:
 	$(PYTHON_SETUP) build
