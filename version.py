@@ -655,7 +655,7 @@ class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
         return person.email
 
 
-# Copyright © 2008–2022 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the

@@ -84,7 +84,7 @@ clean:
 	$(RM) -r ${GENERATED_FILES}
 
 
-# Copyright © 2006–2022 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2006–2023 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the
