@@ -55,6 +55,11 @@ Removed:
 
   Thanks to Michał Górny for the implementation.
 
+* Remove Setuptools ‘test’ command support.
+
+  The ‘test’ command is formally deprecated, in favour of dedicated test
+  runners. <URL: https://setuptools.pypa.io/en/stable/history.html#v41-5-0>
+
 
 Version 2.3.2
 =============
