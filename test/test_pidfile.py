@@ -141,10 +141,9 @@ def setup_pidfile_fixtures(testcase):
 
     def get_scenario_option(testcase, key, default=None):
         value = default
-        try:
+        with contextlib.suppress(
+                NameError, TypeError, AttributeError, KeyError):
             value = testcase.scenario[key]
-        except (NameError, TypeError, AttributeError, KeyError):
-            pass
         return value
 
     func_patcher_os_getpid = unittest.mock.patch.object(
