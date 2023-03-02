@@ -69,6 +69,11 @@ Removed:
   The commands to publish a distribution to PyPI are removed, in favour of the
   Twine tool. `<https://setuptools.pypa.io/en/stable/history.html#v42-0-0>`_
 
+* Remove the obsolete `runner` module.
+
+  This module was deprecated starting in `python-daemon` version 2.1.2, and is
+  now removed as unmaintained.
+
 
 Version 2.3.2
 =============
