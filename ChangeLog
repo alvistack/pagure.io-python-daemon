@@ -14,6 +14,10 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
+Added:
+
+* Document a `ServiceRunner` class as an example of using `DaemonContext`.
+
 Changed:
 
 * Refactor calculation of file descriptor ranges to close.
