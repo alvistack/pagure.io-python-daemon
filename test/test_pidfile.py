@@ -9,6 +9,7 @@
 
 import builtins
 import errno
+import contextlib
 import io
 import itertools
 import os
