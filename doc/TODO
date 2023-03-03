@@ -1,7 +1,7 @@
 TODO for ‘python-daemon’ library
 ################################
 
-:Updated: 2022-02-18
+:Updated: 2023-03-04
 
 =======
 PENDING
@@ -27,6 +27,14 @@ Important
 
 Wishlist
 --------
+
+* Notify the parent process when the daemon is ready.
+
+  `Pagure #29 <https://pagure.io/python-daemon/issue/29>`_
+
+* Clear process environment variables when DaemonContext opens.
+
+  `Pagure #30 <https://pagure.io/python-daemon/issue/30>`_
 
 * Allow specification of a syslog service name to log as (default:
   output to stdout and stderr, not syslog).
