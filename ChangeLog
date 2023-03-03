@@ -14,11 +14,7 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Added:
-
-* Document a `ServiceRunner` class as an example of using `DaemonContext`.
-
-Changed:
+Bugs Fixed:
 
 * Refactor calculation of file descriptor ranges to close.
 
@@ -33,6 +29,14 @@ Changed:
   daemon.
 
   Thanks to Igor Kholopov for the implementation.
+
+  Closes: Pagure #72. Thanks to Anton Anton for the report.
+
+Added:
+
+* Document a `ServiceRunner` class as an example of using `DaemonContext`.
+
+Changed:
 
 * Raise a TypeError if any `exclude` values are not valid file descriptors.
 
