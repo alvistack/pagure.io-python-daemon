@@ -9,7 +9,6 @@
 
 import builtins
 import errno
-import functools
 import io
 import itertools
 import os

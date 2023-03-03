@@ -8,7 +8,6 @@
 """ Unit test for ‘version’ packaging module. """
 
 import collections
-import errno
 import functools
 import io
 import json

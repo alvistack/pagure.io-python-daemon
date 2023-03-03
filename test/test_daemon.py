@@ -9,7 +9,6 @@
 
 import collections
 import errno
-import functools
 import importlib
 import io
 import os

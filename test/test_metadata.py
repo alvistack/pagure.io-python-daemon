@@ -8,7 +8,6 @@
 """ Unit test for ‘_metadata’ private module. """
 
 import collections
-import errno
 import functools
 import json
 import re
