@@ -17,7 +17,7 @@ import sys
 from setuptools import (setup, find_packages)
 
 sys.path.insert(0, os.path.dirname(__file__))
-import version
+import version  # noqa: E402
 
 
 main_module_name = 'daemon'

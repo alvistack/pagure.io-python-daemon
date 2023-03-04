@@ -814,14 +814,6 @@ class DaemonContext_make_signal_handler_TestCase(DaemonContext_BaseTestCase):
         result = instance._make_signal_handler(target)
         self.assertEqual(expected_result, result)
 
-    def test_returns_method_for_str_name(self):
-        """ Should return DaemonContext method for name of type ‘str’. """
-        instance = self.test_instance
-        target = str('terminate')
-        expected_result = instance.terminate
-        result = instance._make_signal_handler(target)
-        self.assertEqual(expected_result, result)
-
     def test_raises_error_for_unknown_name(self):
         """ Should raise AttributeError for unknown method name. """
         instance = self.test_instance
@@ -2227,8 +2219,8 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
             default map should not contain any signals which are not
             defined in the `signal` module.
             """
-        del(self.default_signal_map[self.fake_signal_module.SIGTTOU])
-        del(self.fake_signal_module.SIGTTOU)
+        del self.default_signal_map[self.fake_signal_module.SIGTTOU]
+        del self.fake_signal_module.SIGTTOU
         expected_result = self.default_signal_map
         result = daemon.daemon.make_default_signal_map()
         self.assertEqual(expected_result, result)
