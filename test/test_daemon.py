@@ -2219,8 +2219,8 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
             default map should not contain any signals which are not
             defined in the `signal` module.
             """
-        del(self.default_signal_map[self.fake_signal_module.SIGTTOU])
-        del(self.fake_signal_module.SIGTTOU)
+        del self.default_signal_map[self.fake_signal_module.SIGTTOU]
+        del self.fake_signal_module.SIGTTOU
         expected_result = self.default_signal_map
         result = daemon.daemon.make_default_signal_map()
         self.assertEqual(expected_result, result)
