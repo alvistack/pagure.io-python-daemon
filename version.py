@@ -178,7 +178,7 @@ class ChangeLogEntry:
     def validate_version(cls, value):
         """ Validate the `version` value.
 
-            :param vaue: The prospective `version` value.
+            :param value: The prospective `version` value.
             :return: ``None`` if the value is valid.
             :raises ValueError: If the value is invalid.
             """
