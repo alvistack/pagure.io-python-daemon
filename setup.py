@@ -58,7 +58,7 @@ setup_kwargs = dict(
             "docutils",
             ],
         install_requires=[
-            "setuptools",
+            "setuptools >=62.4.0",
             "lockfile >=0.10",
             ],
         python_requires=">=3",
