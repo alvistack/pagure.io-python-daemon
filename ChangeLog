@@ -14,9 +14,9 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Changes:
+Added:
 
-* None.
+* PyPA recommended Project URLs for the distribution.
 
 
 Version 3.0.0

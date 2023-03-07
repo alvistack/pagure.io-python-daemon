@@ -73,7 +73,6 @@ setup_kwargs = dict(
         description=synopsis,
         license=metadata.license,
         keywords="daemon fork unix".split(),
-        url=metadata.url,
         long_description=long_description,
         long_description_content_type="text/x-rst",
         classifiers=[
@@ -85,6 +84,13 @@ setup_kwargs = dict(
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",
             ],
+        url=metadata.url,
+        project_urls={
+            'Change Log':
+                "https://pagure.io/python-daemon/blob/main/f/ChangeLog",
+            'Source': "https://pagure.io/python-daemon/",
+            'Issue Tracker': "https://pagure.io/python-daemon/issues",
+            },
         )
 
 # Docutils is only required for building, but Setuptools can't distinguish
