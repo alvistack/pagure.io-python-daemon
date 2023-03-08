@@ -14,7 +14,10 @@ import os.path
 import pydoc
 import sys
 
-from setuptools import (setup, find_packages)
+from setuptools import (
+    find_packages,
+    setup,
+)
 
 sys.path.insert(0, os.path.dirname(__file__))
 import version  # noqa: E402
