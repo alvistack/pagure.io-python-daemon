@@ -8,6 +8,10 @@
 # Documentation: <URL:https://pycodestyle.pycqa.org/>.
 pycodestyle == 2.8.0
 
+# Python ‘import’ statement sorter.
+# Documentation: <URL:https://pycqa.github.io/isort/>.
+isort == 5.12.0
+
 
 # Local variables:
 # coding: utf-8

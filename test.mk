@@ -22,6 +22,8 @@ TEST_COVERAGE_RUN_OPTS ?= --branch \
 TEST_COVERAGE_REPORT_OPTS ?=
 TEST_COVERAGE_HTML_OPTS ?= --directory ${coverage_html_report_dir}/
 
+TEST_ISORT_OPTS ?=
+
 TEST_FLAKE8_OPTS ?=
 
 TEST_PYCODESTYLE_OPTS ?=
@@ -69,11 +71,14 @@ test-coverage-report: .coverage
 
 
 .PHONY: test-static
-test-static: test-flake8
+test-static: test-isort test-flake8
+
+.PHONY: test-isort
+test-isort:
+	$(PYTHON3) -m isort ${TEST_ISORT_OPTS} ${CODE_MODULES}
 
 .PHONY: test-flake8
 test-flake8:
-	$(PYTHON3) -m pip install flake8
 	$(PYTHON3) -m flake8 ${TEST_FLAKE8_OPTS}
 
 

@@ -41,6 +41,7 @@ test_requirements = [
         ]
 
 devel_requirements = [
+        "isort",
         "twine",
         ] + test_requirements
 
