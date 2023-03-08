@@ -14,6 +14,16 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
+Bugs Fixed:
+
+* Declare dependency on Setuptools >= 62.4.0.
+
+  This is necessary for establishing the version information via Setuptools. We
+  use ‘setuptools.command.build’, `introduced in Setuptools version 62.4.0
+  <https://setuptools.pypa.io/en/stable/history.html#v62-4-0>`_.
+
+  Closes: Pagure #74. Thanks to Edison Wong for the report.
+
 Added:
 
 * PyPA recommended Project URLs for the distribution.

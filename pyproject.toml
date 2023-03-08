@@ -8,7 +8,9 @@
 [build-system]
 
 # Minimum requirements for the build system.
-requires = ["setuptools", "docutils"]
+requires = [
+    "setuptools >=62.4.0",
+    "docutils"]
 
 # Path to the Python object to perform the build.
 build-backend = "setuptools.build_meta"
