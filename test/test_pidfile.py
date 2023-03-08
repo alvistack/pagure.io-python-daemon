@@ -8,8 +8,8 @@
 """ Unit test for ‘pidfile’ module. """
 
 import builtins
-import errno
 import contextlib
+import errno
 import io
 import itertools
 import os
