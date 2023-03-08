@@ -4,6 +4,10 @@
 
 --requirement base.txt
 
+# Pip version inspector that reports PyPI available updates.
+# Homepage: <URL:https://github.com/bartTC/pip-check/>.
+pip-check
+
 # Static code checker for Python style recommendations.
 # Documentation: <URL:https://pycodestyle.pycqa.org/>.
 pycodestyle == 2.8.0
