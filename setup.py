@@ -53,11 +53,11 @@ devel_requirements = [
 
 setup_kwargs = dict(
         name=metadata.distribution_name,
+        version="3.0.2",
         packages=find_packages(exclude=["test", "util"]),
         entry_points={
             "setuptools.finalize_distribution_options": [
                 "description_fields = util.packaging:derive_dist_description",
-                "version = util.packaging:derive_version",
                 "maintainer = util.packaging:derive_maintainer",
                 ],
             },
@@ -74,7 +74,7 @@ setup_kwargs = dict(
             "packaging",
             "lockfile >=0.10",
             ],
-        python_requires=">=3",
+        python_requires=">=3.7",
         extras_require={
             'test': test_requirements,
             'build': build_requirements,

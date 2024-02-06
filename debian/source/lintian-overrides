@@ -1,0 +1,4 @@
+python-daemon source: file-without-copyright-information
+python-daemon source: no-debian-changes
+python-daemon source: source-contains-prebuilt-windows-binary
+python-daemon source: source-package-encodes-python-version
