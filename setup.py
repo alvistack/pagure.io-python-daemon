@@ -11,7 +11,6 @@
 """ Distribution setup for ‘python-daemon’ library. """
 
 import os.path
-import pydoc
 import sys
 
 from setuptools import (
@@ -19,18 +18,15 @@ from setuptools import (
     setup,
 )
 
+# This module is not inside a package, so we can't use relative imports. We
+# instead add its directory to the import path.
 sys.path.insert(0, os.path.dirname(__file__))
-import version  # noqa: E402
+import util.packaging  # noqa: E402
 
 
-main_module_name = 'daemon'
-main_module_fromlist = ['_metadata']
-main_module = __import__(
-        main_module_name,
-        level=0, fromlist=main_module_fromlist)
+main_module = util.packaging.main_module_by_name(
+        'daemon', fromlist=['_metadata'])
 metadata = main_module._metadata
-
-(synopsis, long_description) = pydoc.splitdoc(pydoc.getdoc(main_module))
 
 
 test_requirements = [
@@ -47,25 +43,29 @@ devel_requirements = [
 
 
 setup_kwargs = dict(
-        distclass=version.ChangelogAwareDistribution,
         name=metadata.distribution_name,
-        packages=find_packages(exclude=["test"]),
-        cmdclass={
-            "write_version_info": version.WriteVersionInfoCommand,
-            "egg_info": version.EggInfoCommand,
-            "build": version.BuildCommand,
+        packages=find_packages(exclude=["test", "util"]),
+        entry_points={
+            "setuptools.finalize_distribution_options": [
+                "description_fields = util.packaging:derive_dist_description",
+                "version = util.packaging:derive_version",
+                "maintainer = util.packaging:derive_maintainer",
+                ],
             },
 
         # Setuptools metadata.
         zip_safe=False,
         setup_requires=[
             "docutils",
+            "packaging",
+            "setuptools",
             ],
         install_requires=[
             "setuptools >=62.4.0",
+            "packaging",
             "lockfile >=0.10",
             ],
-        python_requires=">=3",
+        python_requires=">=3.7",
         extras_require={
             'test': test_requirements,
             'devel': devel_requirements,
@@ -74,11 +74,8 @@ setup_kwargs = dict(
         # PyPI metadata.
         author=metadata.author_name,
         author_email=metadata.author_email,
-        description=synopsis,
         license=metadata.license,
         keywords="daemon fork unix".split(),
-        long_description=long_description,
-        long_description_content_type="text/x-rst",
         classifiers=[
             # Reference: <URL:https://pypi.org/classifiers/>
             "Development Status :: 5 - Production/Stable",
@@ -103,7 +100,7 @@ setup_kwargs = dict(
 setup_kwargs['install_requires'].append("docutils")
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: nocover
     setup(**setup_kwargs)
 
 
