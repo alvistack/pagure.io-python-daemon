@@ -65,7 +65,7 @@ setup_kwargs = dict(
             "setuptools >=62.4.0",
             "lockfile >=0.10",
             ],
-        python_requires=">=3",
+        python_requires=">=3.7",
         extras_require={
             'test': test_requirements,
             'devel': devel_requirements,
