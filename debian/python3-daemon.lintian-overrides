@@ -1,0 +1,4 @@
+python3-daemon: copyright-without-copyright-notice
+python3-daemon: initial-upload-closes-no-bugs
+python3-daemon: no-manual-page
+python3-daemon: zero-byte-file-in-doc-directory
